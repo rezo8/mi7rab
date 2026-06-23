@@ -128,10 +128,12 @@
   pointer-events: none;
 }
 .recess {
-  min-height: 7.5rem;
+  /* Fixed height so the card is a constant shape; the font auto-fits (useFitText). */
+  height: 8rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow: hidden;
 }
 .recess[data-fetching="true"] {
   opacity: 0.5;
@@ -387,6 +389,99 @@
   color: var(--color-ink-muted);
 }
 
+/* ---------- controls: pause / shuffle / fullscreen ---------- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-ink-faint) 45%, transparent);
+  background: transparent;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  transition:
+    color var(--dur-quick),
+    border-color var(--dur-quick);
+}
+.control:hover {
+  color: var(--color-accent);
+  border-color: color-mix(in oklab, var(--color-accent) 45%, transparent);
+}
+.control svg {
+  display: block;
+}
+
+/* the 90s auto-shuffle countdown */
+.countdown {
+  width: 9rem;
+  height: 2px;
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--color-ink-faint) 28%, transparent);
+  overflow: hidden;
+}
+.countdown[data-paused="true"] {
+  opacity: 0.4;
+}
+.countdown-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--color-accent-soft), var(--color-accent));
+  animation-name: countdown;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes countdown {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* corner placement */
+.corner {
+  position: absolute;
+  top: 1.25rem;
+  z-index: 5;
+}
+.corner--left {
+  left: 1.5rem;
+}
+.corner--right {
+  right: 1.5rem;
+}
+
+/* ---------- fullscreen / wall projection ---------- */
+.page--fullscreen {
+  gap: 3.5rem;
+}
+.page--fullscreen .niche {
+  max-width: min(64rem, 88vw);
+}
+.page--fullscreen .recess {
+  height: clamp(11rem, 34vh, 20rem);
+}
+.page--fullscreen .rhythm {
+  margin-top: 2.75rem;
+}
+.page--fullscreen .wordmark {
+  font-size: 1rem;
+}
+.page--fullscreen .attrib {
+  font-size: 0.9rem;
+}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -395,5 +490,9 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  /* no animated countdown bar; the auto-shuffle timer still runs */
+  .countdown {
+    display: none;
   }
 }

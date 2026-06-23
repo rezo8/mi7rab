@@ -1,4 +1,5 @@
 import type { Strategy } from "@mihrab/shared";
+import { useFitText } from "./useFitText";
 
 interface Props {
   strategy?: Strategy;
@@ -6,14 +7,25 @@ interface Props {
   isError: boolean;
   isFetching: boolean;
   reducedMotion: boolean;
+  fullscreen: boolean;
 }
 
-/** The lit recess: the niche frame holding a single aphorism (or its loading/error state). */
-export function StrategyCard({ strategy, isLoading, isError, isFetching, reducedMotion }: Props) {
+/** The lit recess: a fixed-shape niche holding one auto-fit aphorism. */
+export function StrategyCard({
+  strategy,
+  isLoading,
+  isError,
+  isFetching,
+  reducedMotion,
+  fullscreen,
+}: Props) {
+  const { containerRef, textRef } = useFitText(strategy?.text ?? "", fullscreen ? 5 : 2.9);
+
   return (
     <article className="niche" aria-busy={isLoading || isFetching}>
       <div
         className="recess"
+        ref={containerRef}
         data-fetching={isFetching && !isLoading ? "true" : undefined}
         role="status"
         aria-live="polite"
@@ -31,6 +43,7 @@ export function StrategyCard({ strategy, isLoading, isError, isFetching, reduced
           </p>
         ) : strategy ? (
           <blockquote
+            ref={textRef}
             key={reducedMotion ? "static" : strategy.id}
             className="aphorism"
             data-enter={reducedMotion ? undefined : ""}
