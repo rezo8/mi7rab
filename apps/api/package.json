@@ -13,6 +13,7 @@
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "@mihrab/shared": "workspace:*",
+    "better-auth": "1.4.21",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.3",
     "hono": "^4.6.14",
@@ -21,6 +22,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@better-auth/cli": "1.4.21",
     "@mihrab/tsconfig": "workspace:*",
     "@types/node": "^22.10.5",
     "@types/pg": "^8.11.10",

@@ -9,6 +9,9 @@ import { env } from "../env";
 export const redis = new Redis(env.REDIS_URL, {
   maxRetriesPerRequest: 3,
   commandTimeout: 2000,
+  // Connect on first use, not at import — keeps one-shot scripts (e.g. the
+  // Better Auth schema-gen CLI) from hanging on an idle open socket.
+  lazyConnect: true,
 });
 
 redis.on("error", (err) => {
