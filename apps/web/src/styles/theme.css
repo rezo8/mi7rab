@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/*
+ * "Niche at dusk" — a deep warm-umber field (an unlit alcove); the Oblique
+ * card is a lit recess with a single saffron-gold focal rule. Tokens here
+ * become both CSS variables and Tailwind utilities.
+ */
+@theme {
+  --color-ground: #1a1714; /* warm umber near-black — the unlit alcove */
+  --color-ground-raise: #211c18; /* the recess / card surface */
+  --color-ground-sink: #120f0d; /* deepest shadow / vignette edge */
+
+  --color-ink: #ede6d8; /* warm parchment — the aphorism */
+  --color-ink-muted: #a89e8c; /* secondary text / labels */
+  --color-ink-faint: #6b6356; /* captions, attribution */
+
+  --color-accent: #c9a24b; /* saffron / oxidized brass — the prayer-light */
+  --color-accent-soft: #8a6e32; /* dimmed gold for hairlines */
+  --color-verge: #7c8a7e; /* faded verdigris — rare secondary */
+  --color-danger: #c2603f; /* terracotta — errors stay in the warm family */
+
+  --font-serif: "Fraunces Variable", Fraunces, Georgia, serif;
+  --font-sans: "Hanken Grotesk Variable", "Hanken Grotesk", system-ui, sans-serif;
+}
