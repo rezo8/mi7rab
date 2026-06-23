@@ -8,6 +8,13 @@
       "when": 1782223585941,
       "tag": "0000_lying_nitro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782236695720,
+      "tag": "0001_rare_shiver_man",
+      "breakpoints": true
     }
   ]
 }
