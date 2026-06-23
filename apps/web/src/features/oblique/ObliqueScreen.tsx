@@ -17,6 +17,14 @@ export function ObliqueScreen() {
 
   const [isPaused, setIsPaused] = useState(false);
   const [cycle, setCycle] = useState(0); // bumps reset the countdown/timer
+  // `?project` opens straight into the big projection layout (no live keypress
+  // needed), in addition to real browser fullscreen.
+  const [projectMode] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("project") !== null,
+  );
+  const immersive = isFullscreen || projectMode;
   const isPausedRef = useRef(isPaused);
   isPausedRef.current = isPaused;
 
@@ -61,7 +69,7 @@ export function ObliqueScreen() {
   }, [toggleFullscreen, togglePause, advance]);
 
   return (
-    <main id="main" className={`page${isFullscreen ? " page--fullscreen" : ""}`}>
+    <main id="main" className={`page${immersive ? " page--fullscreen" : ""}`}>
       <nav className="corner corner--left">
         <button
           type="button"
@@ -95,7 +103,7 @@ export function ObliqueScreen() {
         isError={isError}
         isFetching={isFetching}
         reducedMotion={reducedMotion}
-        fullscreen={isFullscreen}
+        fullscreen={immersive}
       />
 
       <div className="page-foot">
