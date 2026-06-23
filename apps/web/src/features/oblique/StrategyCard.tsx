@@ -19,7 +19,7 @@ export function StrategyCard({
   reducedMotion,
   fullscreen,
 }: Props) {
-  const { containerRef, textRef } = useFitText(strategy?.text ?? "", fullscreen ? 5 : 2.9);
+  const { containerRef, textRef } = useFitText(strategy?.text ?? "", fullscreen ? 10 : 2.9);
 
   return (
     <article className="niche" aria-busy={isLoading || isFetching}>
