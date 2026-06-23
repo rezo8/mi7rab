@@ -2,6 +2,9 @@ packages:
   - "apps/*"
   - "packages/*"
 
+allowBuilds:
+  esbuild: true
+
 # Allow these native/postinstall build scripts to run (pnpm 10+ blocks them by default).
 onlyBuiltDependencies:
   - esbuild
