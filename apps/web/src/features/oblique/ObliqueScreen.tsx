@@ -6,6 +6,7 @@ import { useSession, signOut } from "@/lib/auth/auth-client";
 import { useStrategy } from "./useStrategy";
 import { StrategyCard } from "./StrategyCard";
 import { DrawButton } from "./DrawButton";
+import { BackgroundAudio } from "@/features/audio/BackgroundAudio";
 
 const SHUFFLE_MS = 90_000; // auto-advance interval
 
@@ -134,6 +135,8 @@ export function ObliqueScreen() {
 
         <p className="attrib">Oblique Strategies · Brian Eno &amp; Peter Schmidt</p>
       </div>
+
+      <BackgroundAudio />
     </main>
   );
 }
