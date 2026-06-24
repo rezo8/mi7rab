@@ -5,4 +5,8 @@
  */
 export const env = {
   apiUrl: import.meta.env.VITE_API_URL ?? "",
+  // Optional ambient audio: a YouTube video/playlist id for the corner
+  // mini-player. Default: Brian Eno — "Neroli (Thinking Music)". Set
+  // VITE_YT_AUDIO_ID to change it, or "" to hide the player entirely.
+  youtubeAudioId: import.meta.env.VITE_YT_AUDIO_ID ?? "Dl9rkLybDHw",
 } as const;
