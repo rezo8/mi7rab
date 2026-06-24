@@ -29,17 +29,33 @@ You do not enter mihrab by browsing. You enter by *making*.
 2. **Three minutes of writing** — a brain dump in the spirit of _The Artist's
    Way_; unedited, for its own sake.
 3. **Keep it encrypted, or don't.** You may save what you wrote, but only
-   **end-to-end encrypted**: your key is the only way in, and there is no other.
-   The system never sees the plaintext. _We won't touch your data — not a thing._
+   **end-to-end encrypted**. On first save your browser generates a key and shows
+   it once — **keep it; there is no recovery.** Your account decides *which drawer
+   is yours*; your key is the only thing that opens it. The server holds ciphertext
+   and never sees a word. _We won't touch your data — not a thing._
 4. **The doors open.** Having made something, you've unlocked the Mi7rab.
 
 > Contribution is the price of admission; privacy is the covenant.
 
+The ritual **recurs daily** — a fresh page each day, in the spirit of morning
+pages. Your past pages stay in your drawer, openable only with your key; you can
+return and read them whenever you like.
+
+**On the key (zero-knowledge by design).** Two locks, never the same: your
+**login** grants *access* (it tells us which encrypted pages are yours); your
+**key** grants *decryption* (it turns them readable, only in your browser). The
+login password is deliberately *never* the encryption key — it reaches the
+server, so anything derived from it wouldn't be zero-knowledge. A future
+convenience could add a separate, browser-only *passphrase* that wraps your key
+(the password-manager model) — but never the login password, and never sent to
+the server.
+
 ## The Eight Doors
 
-Ahead of you, eight paths. Each is a different *kind of room* — its own feeling,
-its own way of moving. **Flat to face, deep to enter.** (Eight: a lucky number,
-and an octave — the same note returned, one register up.)
+Ahead of you, eight paths. You **wander freely** — no required order, no
+corridor; the garden, not a guided tour. Each path is a different *kind of
+room* — its own feeling, its own way of moving. **Flat to face, deep to enter.**
+(Eight: a lucky number, and an octave — the same note returned, one register up.)
 
 ### Knowledge
 
@@ -60,7 +76,9 @@ was lost._ Where Chaos floods you, Grief asks you to stay.
 ### Joy
 
 Fiction, film, music — recommendations and favorite excerpts. Delight, chosen
-and shared.
+and shared. Home of the **"what do you think?" loop**: react to a pick and the
+room responds — keep, or swap; after three swaps it says _take a leap of faith_
+(sentiment now, an LLM later). See `IDEAS.md`.
 
 ### Safety
 
@@ -95,19 +113,23 @@ Victories. What was won — so the rest is bearable.
 - **The LLM only where it earns its place.** Start with the simplest honest thing.
 - **Gravity, not spectacle** — especially in the rooms that document harm.
 
-## Open questions
+## Decisions so far
 
-- **Arc or constellation?** Do the doors sit free to wander (the garden), or is
-  there a guided first passage (Knowledge → … → Hope)? Leaning _wander_, perhaps
-  with an offered path.
-- **The key.** How a visitor holds their encryption key — a passphrase they
-  choose, or a generated key they must keep. No recovery is the point; say so
-  plainly.
-- **After the unlock.** Does the writing ritual recur? Can you return to your own
-  past pages?
-- **The "what do you think?" loop** — likely lives inside Joy.
-- **Past eight.** If it ever grows, the next door belongs on the restorative side
-  (Love / Solidarity, Rest).
+- **Free wander** — the doors are a constellation, not a sequence.
+- **Generated key, kept by the user** — shown once, no recovery; login and key
+  are separate locks (see The Threshold).
+- **Daily ritual** — the writing recurs each day; your past pages are revisitable
+  (decrypted with your key).
+- **The "what do you think?" loop lives in Joy.**
+
+## Still open
+
+- **A password-feel for the key (later).** An optional browser-only passphrase
+  that *wraps* the generated key — never the login password, never sent up.
+- **Multi-device.** How you carry your key to a second device (enter once there;
+  optionally cache locally).
+- **The don't-save path.** If you choose not to keep a day's writing, it's simply
+  ephemeral — gone when you leave. (Likely right; confirm.)
 
 ## How it grows from what's already here
 
@@ -123,5 +145,5 @@ Victories. What was won — so the rest is bearable.
 The grave rooms document real suffering. They carry content warnings, cite the
 record rather than asserting, and keep support resources within reach — most of
 all in Strength, where self-sacrifice as protest is held. The measure is always
-gravity over spectacle. Bearing witness without flattening the people inside the
+gravity over spectacle: bearing witness without flattening the people inside the
 record into a point being made.
