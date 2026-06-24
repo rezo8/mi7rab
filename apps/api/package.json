@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/db/seed.ts",
@@ -23,10 +25,13 @@
   },
   "devDependencies": {
     "@better-auth/cli": "1.4.21",
+    "@mihrab/eslint-config": "workspace:*",
     "@mihrab/tsconfig": "workspace:*",
     "@types/node": "^22.10.5",
     "@types/pg": "^8.11.10",
     "drizzle-kit": "^0.30.1",
-    "tsx": "^4.19.2"
+    "eslint": "^9.18.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
   }
 }
