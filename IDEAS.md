@@ -37,6 +37,21 @@ them, who, and what changed. Filter by country (and maybe era / outcome).
 > War crimes and revolutions differ only in content — design the deck, card, and
 > filter **once** and point both (and Oblique Strategies) at it.
 
+### Project Crimson Thread — Israel / Palestine
+A focused, sourced project documenting the history of Israel/Palestine and the
+record of Israel's alleged violations of international law and war crimes —
+chronological and citations-first. The "crimson thread" is the throughline of
+harm traced across the timeline.
+
+- **Builds on:** the same deck/card/filter mechanic, plus a **timeline** view
+  alongside the scattered cards; filter by period, place, and event.
+- **Sourcing (non-negotiable):** every card cites the documented record — UN
+  bodies and commissions of inquiry, ICJ/ICC filings, Amnesty International,
+  Human Rights Watch, B'Tselem, and primary reporting. Present the record and
+  link out; never assert without a citation.
+- **Tone:** sober and factual, like the war-crimes deck — the sourcing carries
+  the weight, not the framing.
+
 ---
 
 ## 2. Recommendation engines — curated by my taste
