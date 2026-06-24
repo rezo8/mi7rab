@@ -10,6 +10,9 @@ import { Pool } from "pg";
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const db = drizzle(pool);
 
-await migrate(db, { migrationsFolder: "./drizzle" });
-await pool.end();
-console.log("✓ migrations applied");
+try {
+  await migrate(db, { migrationsFolder: "./drizzle" });
+  console.log("✓ migrations applied");
+} finally {
+  await pool.end();
+}

@@ -4,11 +4,18 @@ import { ApiError } from "./errors";
 type Options = RequestInit & { signal?: AbortSignal };
 
 async function request<T>(path: string, options: Options = {}): Promise<T> {
+  // Only set a JSON Content-Type when there's a body, so GETs stay "simple"
+  // requests and don't trigger a cross-origin CORS preflight. Normalize via
+  // Headers so a caller-supplied Headers/tuple merges correctly.
+  const headers = new Headers(options.headers);
+  if (options.body != null && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
   const res = await fetch(`${env.apiUrl}${path}`, {
-    // Send/receive the HttpOnly auth cookie (cross-origin in prod).
-    credentials: "include",
+    credentials: "include", // send/receive the HttpOnly auth cookie
     ...options,
-    headers: { "Content-Type": "application/json", ...options.headers },
+    headers,
   });
 
   if (!res.ok) {

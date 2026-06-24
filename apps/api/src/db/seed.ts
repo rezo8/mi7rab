@@ -23,15 +23,17 @@ const db = drizzle(pool, { schema: { strategies } });
 
 const rows = file.cards.map((text) => ({ text, deck: file.deck }));
 
-// Idempotent thanks to the unique (text, deck) index.
-await db.insert(strategies).values(rows).onConflictDoNothing();
+try {
+  // Idempotent thanks to the unique (text, deck) index.
+  await db.insert(strategies).values(rows).onConflictDoNothing();
 
-const [stats] = await db
-  .select({ count: sql<number>`count(*)::int` })
-  .from(strategies);
+  const [stats] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(strategies);
 
-console.log(
-  `✓ seeded "${file.deck}" (${file.cards.length} cards in file); strategies in DB: ${stats?.count ?? 0}`,
-);
-
-await pool.end();
+  console.log(
+    `✓ seeded "${file.deck}" (${file.cards.length} cards in file); strategies in DB: ${stats?.count ?? 0}`,
+  );
+} finally {
+  await pool.end();
+}
