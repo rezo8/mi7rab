@@ -63,6 +63,14 @@ a re-entered key is correct without ever revealing it. (A future, kinder option:
 a browser-only *passphrase* that wraps the key — never the login password, never
 sent up — so a second device needs only the passphrase.)
 
+**Not even me.** Running mihrab, I see only ciphertext, timestamps, and a check
+value that reveals nothing. I cannot read anyone's pages, restore them, or hand
+them over — there is nothing to hand over but gibberish, and no admin view or
+reset exists. The honest caveat: browser end-to-end encryption trusts the app
+that's served, so the guarantee holds only as long as the client stays honest —
+which is exactly why the client is **open-source and self-hostable**: the promise
+is _auditable_, not merely stated.
+
 ## The Eight Doors
 
 Ahead of you, eight paths. You **wander freely** — no required order, no
@@ -133,20 +141,20 @@ Victories. What was won — so the rest is bearable.
 - **Free wander** — the doors are a constellation, not a sequence.
 - **The ritual is the first thing after first login** — not part of sign-up; the
   first page you meet once you're in.
-- **Generated key, shown once ever** — a recovery phrase displayed a single time,
-  no recovery; login and key are separate locks (see The Threshold).
+- **Key model (v1): a passphrase wraps a generated key + a once-shown recovery
+  phrase.** You choose a passphrase; it wraps a generated key (Argon2id) so any
+  device unlocks after login. A recovery phrase, shown **once**, is the
+  break-glass backup if the passphrase is forgotten. Nothing — passphrase, key,
+  or phrase — ever leaves the browser. No recovery if both are lost. Login and
+  key stay separate locks (see The Threshold).
 - **Daily ritual** — the writing recurs each day; your past pages are revisitable
   (decrypted with your key).
 - **The "what do you think?" loop lives in Joy.**
 
 ## Still open
 
-- **Raw phrase vs. passphrase-wrap.** A show-once raw key is simplest but rough
-  to carry; an optional browser-only *passphrase* that wraps the key (Argon2id)
-  is far kinder for re-entry and a second device — still zero-knowledge, never
-  the login password, never sent up. Strong candidate to pull into v1.
-- **Key display format** — a word-list recovery phrase (easy to transcribe) vs.
-  a raw string.
+- **Recovery-phrase format** — a word-list phrase (easy to transcribe) vs. a raw
+  string. (Leaning word-list.)
 - **The don't-save path.** If you choose not to keep a day's writing, it's simply
   ephemeral — gone when you leave. (Likely right; confirm.)
 
