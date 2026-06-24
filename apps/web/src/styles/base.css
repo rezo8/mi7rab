@@ -291,12 +291,7 @@
   letter-spacing: 0.04em;
 }
 
-/* ---------- corner nav + quiet links ---------- */
-.corner-nav {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.5rem;
-}
+/* ---------- quiet links ---------- */
 .link-quiet {
   padding: 0;
   border: none;

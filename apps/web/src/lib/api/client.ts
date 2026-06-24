@@ -1,3 +1,4 @@
+import type { ApiErrorBody } from "@mihrab/shared";
 import { env } from "@/lib/env";
 import { ApiError } from "./errors";
 
@@ -19,9 +20,7 @@ async function request<T>(path: string, options: Options = {}): Promise<T> {
   });
 
   if (!res.ok) {
-    const body = (await res.json().catch(() => undefined)) as
-      | { message?: string }
-      | undefined;
+    const body = (await res.json().catch(() => undefined)) as Partial<ApiErrorBody> | undefined;
     throw new ApiError(res.status, body?.message ?? res.statusText, body);
   }
 

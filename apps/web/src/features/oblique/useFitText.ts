@@ -33,7 +33,16 @@ export function useFitText(text: string, maxRem = 2.9) {
     };
 
     fit();
-    const observer = new ResizeObserver(fit);
+    // ResizeObserver fires once synchronously on observe(); skip that first
+    // callback (we just fit() above) and only re-fit on genuine resizes.
+    let initialObservation = true;
+    const observer = new ResizeObserver(() => {
+      if (initialObservation) {
+        initialObservation = false;
+        return;
+      }
+      fit();
+    });
     observer.observe(container);
     return () => observer.disconnect();
   }, [text, maxRem]);
