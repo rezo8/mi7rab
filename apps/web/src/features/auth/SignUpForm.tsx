@@ -1,29 +1,18 @@
-import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { signUp } from "@/lib/auth/auth-client";
 import { Button } from "@/components/Button";
 import { Field } from "@/components/Field";
+import { useAuthSubmit } from "./useAuthSubmit";
 
 export function SignUpForm() {
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-
-  async function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
-    const { error: signUpError } = await signUp.email({ name, email, password });
-    setBusy(false);
-    if (signUpError) {
-      setError(signUpError.message ?? "Couldn't make a niche. Try a different email or a longer password.");
-      return;
-    }
-    void navigate({ to: "/" });
-  }
+  const { busy, error, onSubmit } = useAuthSubmit(
+    () => signUp.email({ name, email, password }),
+    "Couldn't make a niche. Try a different email or a longer password.",
+  );
 
   return (
     <main id="main" className="page">

@@ -1,4 +1,5 @@
 import type { MiddlewareHandler } from "hono";
+import type { ApiErrorBody } from "@mihrab/shared";
 import { redis } from "../redis/client";
 
 /**
@@ -24,7 +25,10 @@ export function rateLimit(limit = 60, windowSeconds = 60): MiddlewareHandler {
 
       if (count > limit) {
         return c.json(
-          { error: "rate_limited", message: "Too many requests — slow down a moment." },
+          {
+            error: "rate_limited",
+            message: "Too many requests — slow down a moment.",
+          } satisfies ApiErrorBody,
           429,
         );
       }

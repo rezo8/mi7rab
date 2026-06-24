@@ -28,12 +28,3 @@ export async function cached<T>(
 
   return fresh;
 }
-
-/** Drop a cache entry (e.g. after re-seeding the deck). */
-export async function invalidate(key: string): Promise<void> {
-  try {
-    await redis.del(key);
-  } catch (err) {
-    console.error("[cache] invalidate failed:", (err as Error).message);
-  }
-}

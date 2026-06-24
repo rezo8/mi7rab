@@ -1,28 +1,17 @@
-import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { signIn } from "@/lib/auth/auth-client";
 import { Button } from "@/components/Button";
 import { Field } from "@/components/Field";
+import { useAuthSubmit } from "./useAuthSubmit";
 
 export function SignInForm() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-
-  async function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
-    const { error: signInError } = await signIn.email({ email, password });
-    setBusy(false);
-    if (signInError) {
-      setError(signInError.message ?? "That didn't open. Check your details.");
-      return;
-    }
-    void navigate({ to: "/" });
-  }
+  const { busy, error, onSubmit } = useAuthSubmit(
+    () => signIn.email({ email, password }),
+    "That didn't open. Check your details.",
+  );
 
   return (
     <main id="main" className="page">
