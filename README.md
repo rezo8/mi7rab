@@ -82,7 +82,7 @@ fail-fast zod validation of all environment variables. Set a strong
   object storage (a `media` table is the natural next migration).
 - **Deploy**: Railway/Render config (managed Postgres + Redis) + a production
   Docker target; v1 runs locally via Docker Compose.
-- More inspirations alongside the Oblique Strategies.
+- More inspirations alongside the Oblique Strategies — see **[IDEAS.md](./IDEAS.md)** for longer-term concepts (interactive card decks, taste-curated book/film recommendations, an LLM-backed curation loop).
 
 ## License
 
