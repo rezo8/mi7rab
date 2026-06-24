@@ -51,10 +51,17 @@ return and read them whenever you like.
 **login** grants *access* (it tells us which encrypted pages are yours); your
 **key** grants *decryption* (it turns them readable, only in your browser). The
 login password is deliberately *never* the encryption key — it reaches the
-server, so anything derived from it wouldn't be zero-knowledge. A future
-convenience could add a separate, browser-only *passphrase* that wraps your key
-(the password-manager model) — but never the login password, and never sent to
-the server.
+server, so anything derived from it wouldn't be zero-knowledge.
+
+The key is shown **once, ever** — keep it. On your own device it's cached so you
+aren't re-entering it daily, but kept so the page can decrypt *without the raw
+key being readable back out* (a non-extractable browser key). A new device — or
+a cleared browser — means entering your key again; lose it with no copy and the
+pages are gone. That's the covenant, said plainly at the single moment we show
+it. The server holds only ciphertext, plus a small check value that can confirm
+a re-entered key is correct without ever revealing it. (A future, kinder option:
+a browser-only *passphrase* that wraps the key — never the login password, never
+sent up — so a second device needs only the passphrase.)
 
 ## The Eight Doors
 
@@ -124,20 +131,22 @@ Victories. What was won — so the rest is bearable.
 - **Everything behind a login** — no anonymous access; the login screen is the
   only public surface.
 - **Free wander** — the doors are a constellation, not a sequence.
-- **Generated key, kept by the user** — shown once, no recovery; login and key
-  are separate locks (see The Threshold).
+- **The ritual is the first thing after first login** — not part of sign-up; the
+  first page you meet once you're in.
+- **Generated key, shown once ever** — a recovery phrase displayed a single time,
+  no recovery; login and key are separate locks (see The Threshold).
 - **Daily ritual** — the writing recurs each day; your past pages are revisitable
   (decrypted with your key).
 - **The "what do you think?" loop lives in Joy.**
 
 ## Still open
 
-- **Ritual placement.** Is the first write part of sign-up itself, or the first
-  thing you meet after your first login?
-- **A password-feel for the key (later).** An optional browser-only passphrase
-  that *wraps* the generated key — never the login password, never sent up.
-- **Multi-device.** How you carry your key to a second device (enter once there;
-  optionally cache locally).
+- **Raw phrase vs. passphrase-wrap.** A show-once raw key is simplest but rough
+  to carry; an optional browser-only *passphrase* that wraps the key (Argon2id)
+  is far kinder for re-entry and a second device — still zero-knowledge, never
+  the login password, never sent up. Strong candidate to pull into v1.
+- **Key display format** — a word-list recovery phrase (easy to transcribe) vs.
+  a raw string.
 - **The don't-save path.** If you choose not to keep a day's writing, it's simply
   ephemeral — gone when you leave. (Likely right; confirm.)
 
