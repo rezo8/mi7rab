@@ -10,8 +10,10 @@ is beautiful and toward what is unbearable. It is a garden, tended without end.
 
 ## What it is (and isn't)
 
-- **Public, but personal.** Anyone can enter; what they find is *my* archive, in
-  *my* voice — "I gathered this, and here's why."
+- **Public to join, behind a login to enter.** Anyone can make an account, but
+  nothing is open to the anonymous — the whole place lives behind a login.
+  Inside, what you find is *my* archive, in *my* voice — "I gathered this, and
+  here's why."
 - **Curated, never algorithmic.** Every piece is chosen. No feed, no engagement
   metrics, no ranking. Taste is the only sorting function.
 - **Wonder and witness, together.** The same house carries creative provocation
@@ -23,17 +25,21 @@ is beautiful and toward what is unbearable. It is a garden, tended without end.
 
 ## The Threshold
 
-You do not enter mihrab by browsing. You enter by *making*.
+There is no anonymous browsing — an unsigned visitor sees exactly one thing: the
+way in. You enter mihrab not by browsing but by *signing in* and then by
+*making*.
 
-1. **One Oblique Strategy** — a single provocation to begin.
-2. **Three minutes of writing** — a brain dump in the spirit of _The Artist's
+1. **Sign in, or join.** The login screen is all a stranger ever sees;
+   everything beyond it requires an account.
+2. **One Oblique Strategy** — a single provocation to begin.
+3. **Three minutes of writing** — a brain dump in the spirit of _The Artist's
    Way_; unedited, for its own sake.
-3. **Keep it encrypted, or don't.** You may save what you wrote, but only
+4. **Keep it encrypted, or don't.** You may save what you wrote, but only
    **end-to-end encrypted**. On first save your browser generates a key and shows
    it once — **keep it; there is no recovery.** Your account decides *which drawer
    is yours*; your key is the only thing that opens it. The server holds ciphertext
    and never sees a word. _We won't touch your data — not a thing._
-4. **The doors open.** Having made something, you've unlocked the Mi7rab.
+5. **The doors open.** Having made something, you've unlocked the Mi7rab.
 
 > Contribution is the price of admission; privacy is the covenant.
 
@@ -115,6 +121,8 @@ Victories. What was won — so the rest is bearable.
 
 ## Decisions so far
 
+- **Everything behind a login** — no anonymous access; the login screen is the
+  only public surface.
 - **Free wander** — the doors are a constellation, not a sequence.
 - **Generated key, kept by the user** — shown once, no recovery; login and key
   are separate locks (see The Threshold).
@@ -124,6 +132,8 @@ Victories. What was won — so the rest is bearable.
 
 ## Still open
 
+- **Ritual placement.** Is the first write part of sign-up itself, or the first
+  thing you meet after your first login?
 - **A password-feel for the key (later).** An optional browser-only passphrase
   that *wraps* the generated key — never the login password, never sent up.
 - **Multi-device.** How you carry your key to a second device (enter once there;
