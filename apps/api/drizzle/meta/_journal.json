@@ -36,6 +36,13 @@
       "when": 1782590400000,
       "tag": "0004_strategy_ids_array",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1782500328299,
+      "tag": "0005_old_layla_miller",
+      "breakpoints": true
     }
   ]
 }
