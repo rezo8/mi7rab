@@ -49,8 +49,6 @@ export function FallingStreaks({ color }: { color: string }) {
     resize();
     window.addEventListener("resize", resize);
 
-    // Distribute streaks across the full screen on first mount so there's no
-    // empty frame while they "fall in" from the top.
     const count = Math.max(60, Math.floor(window.innerWidth / 14));
     streaksRef.current = Array.from({ length: count }, () => ({
       x: Math.random() * window.innerWidth,

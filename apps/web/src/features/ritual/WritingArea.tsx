@@ -4,13 +4,15 @@ interface Props {
   value: string;
   onChange: (value: string) => void;
   onFirstInput: () => void;
+  onFocus?: () => void;
 }
 
-export function WritingArea({ value, onChange, onFirstInput }: Props) {
+export function WritingArea({ value, onChange, onFirstInput, onFocus }: Props) {
   const started = useRef(false);
 
   return (
     <textarea
+      id="ritual-text"
       className="writing-area"
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -20,7 +22,8 @@ export function WritingArea({ value, onChange, onFirstInput }: Props) {
           onFirstInput();
         }
       }}
-      placeholder="begin."
+      onFocus={onFocus}
+      placeholder="…"
       aria-label="Writing area"
       spellCheck={false}
       autoComplete="off"

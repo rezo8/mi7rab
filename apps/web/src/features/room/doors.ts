@@ -47,7 +47,7 @@ export const DOORS: Door[] = [
       tile: "#383838", tileDim: "#141414",
       crown: "#444444", crownDim: "#1a1a1a",
       fill: "#060606", glow: "rgba(120,120,120,0.28)",
-      streakColor: "#8b0000", bloomColor: "#020203",
+      streakColor: "#ff2020", bloomColor: "#020203",
     },
   },
   {

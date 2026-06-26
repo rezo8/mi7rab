@@ -55,6 +55,10 @@ export function StrategyCard({
         )}
       </div>
 
+      <footer className="niche-attribution">
+        Oblique Strategies · Brian Eno &amp; Peter Schmidt
+      </footer>
+
       <div className="rhythm" aria-hidden="true">
         <span className="dot" />
         <span className="dot" />

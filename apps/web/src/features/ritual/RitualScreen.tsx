@@ -30,6 +30,7 @@ export function RitualScreen() {
   const [redraws, setRedraws] = useState(0);
   const [showMaxRedraws, setShowMaxRedraws] = useState(false);
   const [usedStrategyIds, setUsedStrategyIds] = useState<number[]>([]);
+  const [wuduCollapsed, setWuduCollapsed] = useState(false);
   const ritualTrackedRef = useRef(false);
   const maxRedrawTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -44,6 +45,7 @@ export function RitualScreen() {
       setRedraws(0);
       setShowMaxRedraws(false);
       setUsedStrategyIds([]);
+      setWuduCollapsed(false);
       ritualTrackedRef.current = false;
       setUiState("entered");
     },
@@ -98,6 +100,7 @@ export function RitualScreen() {
     setRedraws(0);
     setShowMaxRedraws(false);
     setUsedStrategyIds([]);
+    setWuduCollapsed(false);
     ritualTrackedRef.current = false;
     setUiState("entered");
   }, [invalidate, timer]);
@@ -112,6 +115,7 @@ export function RitualScreen() {
     setRedraws(0);
     setShowMaxRedraws(false);
     setUsedStrategyIds([]);
+    setWuduCollapsed(false);
     ritualTrackedRef.current = false;
     void refetchStrategy();
     setUiState("strategy");
@@ -139,7 +143,7 @@ export function RitualScreen() {
     <>
       <main
         id="main"
-        className={isWriting ? "page page--ritual" : "page"}
+        className={isWriting || wuduCollapsed ? "page page--ritual" : "page"}
         data-phase={uiState}
       >
         <nav className="corner corner--right">
@@ -150,63 +154,91 @@ export function RitualScreen() {
 
         <p className="wordmark">mihrab</p>
 
-        {/* Strategy phase: full card + wudu section */}
-        {!isWriting && (
+        {/* Strategy card — stays visible throughout the ritual */}
+        <StrategyCard
+          strategy={strategyData}
+          isLoading={stratPending}
+          isError={stratError}
+          isFetching={stratFetching}
+          reducedMotion={reducedMotion}
+          fullscreen={false}
+        />
+
+        {/* Wudu: visible until user clicks begin or focuses the textarea */}
+        {!isWriting && !wuduCollapsed && (
           <>
-            <StrategyCard
-              strategy={strategyData}
-              isLoading={stratPending}
-              isError={stratError}
-              isFetching={stratFetching}
-              reducedMotion={reducedMotion}
-              fullscreen={false}
-            />
-            <section className="ritual-wudu" aria-labelledby="ritual-wudu-heading">
-              <p className="ritual-wudu-heading" id="ritual-wudu-heading">
-                Before you enter
+            <section className="ritual-wudu" aria-label="Writing ritual">
+              <p className="ritual-wudu-lead">
+                Three minutes<br />
+                of uninterrupted<br />
+                writing.
               </p>
-              <p className="ritual-wudu-body">
-                Julia Cameron called them morning pages — three minutes of unfiltered writing
-                at the start of the day. Not a draft. Not an essay. A braindump: whatever is
-                in the mind, poured out without editing or judgement.
-              </p>
-              <p className="ritual-wudu-body">
-                This is the cleansing. One must first empty the mind before entering. Write
-                anything. The clock starts when you do.
-              </p>
+              <div className="ritual-wudu-columns">
+                <div className="ritual-wudu-verse">
+                  <p className="ritual-wudu-stanza">
+                    Best done<br />
+                    at the start of the day,<br />
+                    they say.
+                  </p>
+                  <p className="ritual-wudu-stanza">
+                    Not a draft<br />
+                    nor an essay<br />
+                    nor what you thought<br />
+                    it would become.
+                  </p>
+                  <p className="ritual-wudu-stanza">
+                    Maybe it spews.<br />
+                    Maybe it flows.<br />
+                    Maybe it falls.<br />
+                    Maybe it lands.
+                  </p>
+                  <p className="ritual-wudu-stanza">
+                    Maybe it may be<br />
+                    just what you were looking for.
+                  </p>
+                  <p className="ritual-wudu-stanza">
+                    Only one way to find out.<br />
+                    Clock starts when you do.
+                  </p>
+                </div>
+                <div className="ritual-privacy" role="note">
+                  <p className="ritual-privacy-heading">Privacy</p>
+                  <p className="ritual-privacy-body">
+                    Only your secret key can unlock your pages.<br />
+                    Without it, they remain unreadable forever.
+                  </p>
+                  <p className="ritual-privacy-body">Do what you will with yours.</p>
+                  <p className="ritual-privacy-body">Me?</p>
+                  <p className="ritual-privacy-body">I ate mine.</p>
+                </div>
+              </div>
             </section>
+            <label
+              className="ritual-begin"
+              htmlFor="ritual-text"
+              onClick={() => setWuduCollapsed(true)}
+            >
+              begin.
+            </label>
           </>
         )}
 
-        {/* Writing phase: compact strategy reference */}
-        {isWriting && strategyData && (
-          <p className="ritual-strategy-mini" aria-label="Your prompt">
-            {strategyData.text}
-          </p>
-        )}
-
-        {/* Writing area — present in both strategy and writing phases */}
-        <WritingArea value={text} onChange={setText} onFirstInput={handleFirstInput} />
-
-        {/* Timer — visible once writing begins */}
+        {/* Below-card controls: timer + redraw (writing), save/discard (done) */}
         {isWriting && !isDone && (
-          <WritingTimer phase={timer.phase} secondsLeft={timer.secondsLeft} />
-        )}
-
-        {/* Draw button — up to 3 redraws during writing (before timer is done) */}
-        {isWriting && !isDone && (
-          <div className="ritual-draw-area">
-            {showMaxRedraws ? (
-              <p className="ritual-max-redraws">
-                no, you can't always get what you want.
-              </p>
-            ) : (
-              <DrawButton onDraw={() => void handleRedraw()} isFetching={stratFetching} />
-            )}
+          <div className="ritual-controls">
+            <WritingTimer phase={timer.phase} secondsLeft={timer.secondsLeft} />
+            <div className="ritual-draw-area">
+              {showMaxRedraws ? (
+                <p className="ritual-max-redraws">
+                  you can't always get what you want.
+                </p>
+              ) : (
+                <DrawButton onDraw={() => void handleRedraw()} isFetching={stratFetching} />
+              )}
+            </div>
           </div>
         )}
 
-        {/* Post-timer: save or discard */}
         {isDone && (
           <div className="ritual-actions">
             <p className="ritual-actions-text">
@@ -237,6 +269,14 @@ export function RitualScreen() {
             )}
           </div>
         )}
+
+        {/* Writing area — grows to fill remaining space below */}
+        <WritingArea
+          value={text}
+          onChange={setText}
+          onFirstInput={handleFirstInput}
+          onFocus={() => setWuduCollapsed(true)}
+        />
       </main>
 
       {ritual.showKeyModal && ritual.pendingPhrase && (
