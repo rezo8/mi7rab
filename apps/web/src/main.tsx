@@ -6,6 +6,8 @@ import { routeTree } from "./routeTree.gen";
 import { queryClient } from "@/lib/query/query-client";
 import "@fontsource-variable/fraunces";
 import "@fontsource-variable/hanken-grotesk";
+import "@fontsource/amiri";
+import "@fontsource/aref-ruqaa";
 import "@/styles/theme.css";
 import "@/styles/base.css";
 

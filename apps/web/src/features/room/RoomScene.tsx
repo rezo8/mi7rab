@@ -4,6 +4,9 @@ import { DOORS } from "./doors";
 import { MihrabDoor } from "./MihrabDoor";
 import { ReadingStand } from "./ReadingStand";
 import { PagesModal } from "./PagesModal";
+import { FallingStreaks } from "./FallingStreaks";
+
+const STREAKS_ENABLED = import.meta.env.VITE_FALLING_STREAKS === "true";
 
 interface Props {
   onWriteAnother: () => void;
@@ -12,8 +15,6 @@ interface Props {
 const N = DOORS.length;
 const wrap = (i: number) => ((i % N) + N) % N;
 
-// TODO: falling stars — slow particle rain from ceiling, toggled by VITE_FALLING_STARS=true.
-// Each door could have a distinct particle shape/density. Gate: check import.meta.env.VITE_FALLING_STARS === "true".
 export function RoomScene({ onWriteAnother }: Props) {
   const [active, setActive] = useState(0);
   const [showPages, setShowPages] = useState(false);
@@ -48,7 +49,7 @@ export function RoomScene({ onWriteAnother }: Props) {
     <main
       id="main"
       className="page page--room"
-      style={{ "--room-tint": DOORS[active]!.colors.arch } as React.CSSProperties}
+      style={{ "--room-tint": DOORS[active]!.colors.bloomColor ?? DOORS[active]!.colors.arch } as React.CSSProperties}
     >
       <nav className="corner corner--right">
         <button type="button" className="link-quiet" onClick={() => void signOut()}>
@@ -124,6 +125,11 @@ export function RoomScene({ onWriteAnother }: Props) {
       </button>
 
       {showPages && <PagesModal onClose={() => setShowPages(false)} />}
+      {STREAKS_ENABLED && (
+        <FallingStreaks
+          color={DOORS[active]!.colors.streakColor ?? DOORS[active]!.colors.arch}
+        />
+      )}
     </main>
   );
 }

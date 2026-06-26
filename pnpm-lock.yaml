@@ -87,6 +87,12 @@ importers:
       '@fontsource-variable/hanken-grotesk':
         specifier: ^5.1.0
         version: 5.2.8
+      '@fontsource/amiri':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@fontsource/aref-ruqaa':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@mihrab/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -1024,6 +1030,12 @@ packages:
 
   '@fontsource-variable/hanken-grotesk@5.2.8':
     resolution: {integrity: sha512-K7hu09ZKReBc7EifRLeM4K94NZBrxFEg0nGcISmVwlFQOJo4EmYkLXTWEwr5JcNW4z2hr5zy8vLS2sxC8JDmrQ==}
+
+  '@fontsource/amiri@5.2.8':
+    resolution: {integrity: sha512-HT/wBlEC/ummjXWg5yH+V0Tzw1vITtI9UM8mwxhwOkNZWD2zuie5vXpAVSCZORArT/LUQ4NP0fRcjiElUwI/8A==}
+
+  '@fontsource/aref-ruqaa@5.2.8':
+    resolution: {integrity: sha512-SQ74sGHRdxqFeydiY0aKat4z6TN+JmaP6BNLjPCyovgjvn5Nbj5Kl/YlVDzAJlv1tuvHAvm945kA/g5/gh0qJw==}
 
   '@hono/node-server@1.19.14':
     resolution: {integrity: sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==}
@@ -3600,6 +3612,10 @@ snapshots:
   '@fontsource-variable/fraunces@5.2.9': {}
 
   '@fontsource-variable/hanken-grotesk@5.2.8': {}
+
+  '@fontsource/amiri@5.2.8': {}
+
+  '@fontsource/aref-ruqaa@5.2.8': {}
 
   '@hono/node-server@1.19.14(hono@4.12.26)':
     dependencies:

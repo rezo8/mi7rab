@@ -13,6 +13,8 @@
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.1.0",
     "@fontsource-variable/hanken-grotesk": "^5.1.0",
+    "@fontsource/amiri": "^5.2.8",
+    "@fontsource/aref-ruqaa": "^5.2.8",
     "@mihrab/shared": "workspace:*",
     "@scure/bip39": "^2.2.0",
     "@tanstack/react-query": "^5.62.7",

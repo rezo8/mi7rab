@@ -1,12 +1,14 @@
 export interface DoorColors {
-  /** Active: arch border */          arch:     string;
-  /** Inactive: arch border */        archDim:  string;
-  /** Active: tile/pattern lines */   tile:     string;
-  /** Inactive: tile/pattern lines */ tileDim:  string;
-  /** Active: crown accent */         crown:    string;
-  /** Inactive: crown accent */       crownDim: string;
-  /** Interior fill tint (both) */    fill:     string;
-  /** Active CSS drop-shadow color */ glow:     string;
+  /** Active: arch border */          arch:        string;
+  /** Inactive: arch border */        archDim:     string;
+  /** Active: tile/pattern lines */   tile:        string;
+  /** Inactive: tile/pattern lines */ tileDim:     string;
+  /** Active: crown accent */         crown:       string;
+  /** Inactive: crown accent */       crownDim:    string;
+  /** Interior fill tint (both) */    fill:        string;
+  /** Active CSS drop-shadow color */ glow:        string;
+  /** Falling-streak color override (defaults to arch) */ streakColor?: string;
+  /** Radial bloom color override — set to #020203 to suppress bloom */ bloomColor?: string;
 }
 
 export interface Door {
@@ -45,6 +47,7 @@ export const DOORS: Door[] = [
       tile: "#383838", tileDim: "#141414",
       crown: "#444444", crownDim: "#1a1a1a",
       fill: "#060606", glow: "rgba(120,120,120,0.28)",
+      streakColor: "#8b0000", bloomColor: "#020203",
     },
   },
   {

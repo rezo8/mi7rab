@@ -10,7 +10,7 @@
 @property --room-tint {
   syntax: '<color>';
   inherits: false;
-  initial-value: #050505;
+  initial-value: #020203;
 }
 
 @layer base {
@@ -521,21 +521,14 @@
   gap: 1.25rem;
   padding-top: clamp(1.5rem, 4vh, 3rem);
   padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
-  --room-tint: #050505;
-  transition: --room-tint 0.55s ease;
-  background-color: var(--color-ground);
-  background-image:
-    radial-gradient(
-      ellipse 130% 70% at 50% 100%,
-      color-mix(in srgb, var(--room-tint) 9%, transparent) 0%,
-      transparent 62%
-    ),
-    radial-gradient(
-      125% 85% at 50% 28%,
-      #211b16 0%,
-      var(--color-ground) 46%,
-      var(--color-ground-sink) 100%
-    );
+  --room-tint: #020203;
+  transition: --room-tint 0.5s ease;
+  background-color: #020203;
+  background-image: radial-gradient(
+    ellipse 120% 90% at 50% 82%,
+    color-mix(in srgb, var(--room-tint) 28%, transparent) 0%,
+    transparent 58%
+  );
 }
 
 /* Scene wrapper: doors behind, stand in front — overlap via position */
@@ -655,11 +648,12 @@
   opacity: 0.28;
 }
 
-/* Arabic wordmark on room screen — override Latin letter-spacing */
+/* Arabic wordmark on room screen — Amiri classical Naskh */
 .page--room .wordmark {
-  font-family: var(--font-serif), "Noto Naskh Arabic", "Scheherazade New", serif;
-  letter-spacing: 0.1em;
-  font-size: 0.9rem;
+  font-family: var(--font-arabic);
+  letter-spacing: 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  padding-left: 0;
 }
 
 /* Door info above the scene */
@@ -672,11 +666,10 @@
 }
 .room-door-name {
   margin: 0;
-  font-family: var(--font-serif), "Noto Naskh Arabic", "Scheherazade New", serif;
-  font-size: 1.4rem;
-  font-weight: 440;
+  font-family: var(--font-arabic);
+  font-size: 1.5rem;
+  font-weight: 400;
   color: var(--color-ink);
-  font-variation-settings: "opsz" 20;
   letter-spacing: 0;
 }
 .room-door-counter {
