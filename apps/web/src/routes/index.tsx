@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ObliqueScreen } from "@/features/oblique/ObliqueScreen";
+import { RitualScreen } from "@/features/ritual/RitualScreen";
 
 export const Route = createFileRoute("/")({
-  component: ObliqueScreen,
+  component: RitualScreen,
 });

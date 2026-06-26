@@ -7,6 +7,12 @@
   color-scheme: dark;
 }
 
+@property --room-tint {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #050505;
+}
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -507,6 +513,519 @@
 .page--fullscreen .countdown {
   width: 14rem;
   height: 3px;
+}
+
+/* ---------- room: the eight doors ---------- */
+.page--room {
+  justify-content: center;
+  gap: 1.25rem;
+  padding-top: clamp(1.5rem, 4vh, 3rem);
+  padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
+  --room-tint: #050505;
+  transition: --room-tint 0.55s ease;
+  background-color: var(--color-ground);
+  background-image:
+    radial-gradient(
+      ellipse 130% 70% at 50% 100%,
+      color-mix(in srgb, var(--room-tint) 9%, transparent) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      125% 85% at 50% 28%,
+      #211b16 0%,
+      var(--color-ground) 46%,
+      var(--color-ground-sink) 100%
+    );
+}
+
+/* Scene wrapper: doors behind, stand in front — overlap via position */
+.room-scene {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Carousel: doors + arrows */
+.room-carousel {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  /* bottom padding leaves room for stand to overlap */
+  padding-bottom: clamp(100px, 16vh, 160px);
+}
+.room-doors-row {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(0.25rem, 0.6vw, 0.6rem);
+}
+
+/* Reading stand button — absolute, bottom-center, in front */
+.room-stand-btn {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.room-stand {
+  filter: drop-shadow(0 -8px 32px rgba(0, 0, 0, 0.85));
+  transition: filter var(--dur-quick);
+}
+.room-stand-btn:hover .room-stand,
+.room-stand-btn:focus-visible .room-stand {
+  filter: drop-shadow(0 -8px 40px rgba(0, 0, 0, 0.85)) brightness(1.18);
+}
+.room-stand-btn:focus-visible {
+  outline: none;
+}
+.room-stand-svg {
+  width: clamp(180px, 32vw, 290px);
+  height: auto;
+  display: block;
+}
+
+/* Arrow buttons */
+.room-door-arrow {
+  background: none;
+  border: none;
+  color: var(--color-ink-faint);
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.2rem 0.5rem;
+  padding-bottom: clamp(100px, 16vh, 160px); /* aligns vertically with door bases */
+  cursor: pointer;
+  transition: color var(--dur-quick);
+  user-select: none;
+  flex-shrink: 0;
+}
+.room-door-arrow:hover {
+  color: var(--color-accent);
+}
+
+/* Individual door buttons */
+.mihrab-door {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    opacity var(--dur-card) var(--ease-ritual),
+    transform var(--dur-card) var(--ease-ritual);
+}
+.mihrab-door:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-ground),
+    0 0 0 4px var(--color-accent);
+  border-radius: 4px;
+}
+.mihrab-door-svg {
+  display: block;
+}
+.mihrab-door--active {
+  cursor: default;
+}
+.mihrab-door--active .mihrab-door-svg {
+  width: clamp(160px, 22vw, 240px);
+  /* drop-shadow is set inline per door for per-color glow */
+}
+.mihrab-door--adjacent {
+  opacity: 0.4;
+  transform: translateY(5px);
+}
+.mihrab-door--adjacent .mihrab-door-svg {
+  width: clamp(110px, 15vw, 165px);
+}
+.mihrab-door--adjacent:hover {
+  opacity: 0.6;
+}
+.mihrab-door--far {
+  opacity: 0.15;
+  transform: translateY(12px);
+}
+.mihrab-door--far .mihrab-door-svg {
+  width: clamp(72px, 10vw, 108px);
+}
+.mihrab-door--far:hover {
+  opacity: 0.28;
+}
+
+/* Arabic wordmark on room screen — override Latin letter-spacing */
+.page--room .wordmark {
+  font-family: var(--font-serif), "Noto Naskh Arabic", "Scheherazade New", serif;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
+}
+
+/* Door info above the scene */
+.room-door-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  min-height: 3.5rem;
+}
+.room-door-name {
+  margin: 0;
+  font-family: var(--font-serif), "Noto Naskh Arabic", "Scheherazade New", serif;
+  font-size: 1.4rem;
+  font-weight: 440;
+  color: var(--color-ink);
+  font-variation-settings: "opsz" 20;
+  letter-spacing: 0;
+}
+.room-door-counter {
+  margin: 0.15rem 0 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.room-door-counter-sep {
+  opacity: 0.5;
+  margin: 0 0.15em;
+}
+
+.room-write-another {
+  background: none;
+  border: none;
+  color: var(--color-ink-faint);
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: color var(--dur-quick);
+  padding: 0;
+  margin-top: -0.5rem;
+}
+.room-write-another:hover {
+  color: var(--color-accent);
+}
+
+/* ---------- ritual: writing phase ---------- */
+.page--ritual {
+  justify-content: flex-start;
+  gap: 1rem;
+  padding-top: clamp(2rem, 6vh, 4rem);
+  min-height: 100dvh;
+}
+
+.ritual-strategy-mini {
+  margin: 0;
+  max-width: var(--maxw-niche);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-ink-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- ritual: wudu / invocation section ---------- */
+.ritual-wudu {
+  width: 100%;
+  max-width: var(--maxw-niche);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+.ritual-wudu-heading {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+.ritual-wudu-body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+
+/* ---------- writing area ---------- */
+.writing-area {
+  width: 100%;
+  max-width: var(--maxw-niche);
+  min-height: 8rem;
+  background: transparent;
+  border: none;
+  resize: none;
+  outline: none;
+  padding: 0;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-ink);
+  caret-color: var(--color-accent);
+  font-variation-settings: "opsz" 20;
+}
+.page--ritual .writing-area {
+  flex: 1;
+  min-height: 0;
+}
+.writing-area::placeholder {
+  color: var(--color-ink-faint);
+  font-style: italic;
+}
+.writing-area::-webkit-scrollbar {
+  width: 4px;
+}
+.writing-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+.writing-area::-webkit-scrollbar-thumb {
+  background: var(--color-ink-faint);
+  border-radius: 4px;
+}
+
+/* ---------- ritual timer ---------- */
+.ritual-timer {
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ritual-timer--done {
+  color: color-mix(in oklab, var(--color-accent) 60%, transparent);
+}
+
+/* ---------- draw area (redraws counter) ---------- */
+.ritual-draw-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ritual-max-redraws {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--color-ink-muted);
+}
+
+/* ---------- post-timer actions ---------- */
+.ritual-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: var(--maxw-niche);
+  padding-bottom: clamp(1.5rem, 4vh, 3rem);
+}
+.ritual-actions-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-ink-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* ---------- key reveal modal ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: color-mix(in oklab, var(--color-ground) 85%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+  backdrop-filter: blur(4px);
+}
+.modal-card {
+  width: 100%;
+  max-width: 32rem;
+  max-height: 90dvh;
+  overflow-y: auto;
+  margin: auto;
+}
+.key-modal-body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-ink-muted);
+}
+.key-phrase-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1.5rem;
+  padding: 1rem;
+  background: var(--color-ground-sink);
+  border-radius: 10px;
+  border: 1px solid color-mix(in oklab, var(--color-ink-faint) 35%, transparent);
+}
+.key-phrase-word {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: var(--color-ink);
+}
+.key-phrase-num {
+  font-size: 0.7rem;
+  color: var(--color-ink-faint);
+  min-width: 1.4em;
+  text-align: right;
+}
+.key-copy-btn {
+  font-size: 0.8125rem;
+  align-self: flex-start;
+}
+.key-ack {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  line-height: 1.4;
+}
+.key-ack input[type="checkbox"] {
+  margin-top: 0.15em;
+  accent-color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+/* ---------- pages modal ---------- */
+.pages-modal {
+  max-height: 80dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 28rem;
+}
+.pages-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pages-modal-title {
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--color-ink-faint);
+}
+.pages-modal-close {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.pages-list {
+  display: flex;
+  flex-direction: column;
+}
+.pages-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid color-mix(in oklab, var(--color-ink-faint) 18%, transparent);
+  padding: 0.7rem 0;
+  cursor: pointer;
+  text-align: left;
+  transition: color var(--dur-quick);
+  color: var(--color-ink-muted);
+}
+.pages-list-item:hover {
+  color: var(--color-ink);
+}
+.pages-list-item:last-child {
+  border-bottom: 1px solid color-mix(in oklab, var(--color-ink-faint) 18%, transparent);
+}
+.pages-list-num {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  font-variation-settings: "opsz" 20;
+}
+.pages-list-date {
+  font-size: 0.8rem;
+  color: var(--color-ink-faint);
+  letter-spacing: 0.02em;
+}
+.pages-empty {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: var(--color-ink-faint);
+  line-height: 1.6;
+}
+.pages-reading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.pages-reading-meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-ink-faint);
+  letter-spacing: 0.03em;
+}
+.pages-reading-date {
+  color: var(--color-ink-faint);
+  opacity: 0.7;
+}
+.pages-reading-text {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--color-ink);
+  white-space: pre-wrap;
+  font-variation-settings: "opsz" 20;
+  max-height: 55dvh;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+.pages-reading-text::-webkit-scrollbar {
+  width: 3px;
+}
+.pages-reading-text::-webkit-scrollbar-thumb {
+  background: var(--color-ink-faint);
+  border-radius: 3px;
+}
+.pages-reading-strategy {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--color-ink-faint);
+  line-height: 1.5;
+  font-variation-settings: "opsz" 20;
+  padding-left: 0.9rem;
+  border-left: 1px solid color-mix(in oklab, var(--color-accent-soft) 50%, transparent);
+}
+.pages-no-key {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.pages-phrase-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.pages-phrase-input {
+  font-family: monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  resize: vertical;
+  width: 100%;
 }
 
 /* ---------- reduced motion ---------- */

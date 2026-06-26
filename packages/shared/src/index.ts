@@ -16,3 +16,37 @@ export interface ApiErrorBody {
   error: string;
   message?: string;
 }
+
+/** User profile — `lastPageAt` is a UTC ISO string or null if no pages saved yet. */
+export interface UserProfile {
+  hasEnteredBefore: boolean;
+  lastPageAt: string | null;
+}
+
+/** Body sent when saving an encrypted page. */
+export interface SavePageBody {
+  ciphertext: string;
+  iv: string;
+  strategyIds?: number[];
+}
+
+/** Response from a successful page save. */
+export interface SavedPage {
+  id: string;
+  createdAt: string;
+}
+
+/** A page summary returned in the list endpoint. */
+export interface PageSummary {
+  id: string;
+  createdAt: string;
+}
+
+/** Full page detail (includes ciphertext) returned by the single-page endpoint. */
+export interface PageDetail {
+  id: string;
+  ciphertext: string;
+  iv: string;
+  createdAt: string;
+  strategyTexts: string[];
+}

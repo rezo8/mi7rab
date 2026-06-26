@@ -4,6 +4,8 @@ import { secureHeaders } from "hono/secure-headers";
 import { env } from "./env";
 import { auth } from "./auth";
 import strategies from "./routes/strategies";
+import profile from "./routes/profile";
+import pages from "./routes/pages";
 
 export const app = new Hono();
 
@@ -28,5 +30,7 @@ app.get("/health", (c) => c.json({ ok: true }));
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 app.route("/api/strategies", strategies);
+app.route("/api/profile", profile);
+app.route("/api/pages", pages);
 
 export default app;
