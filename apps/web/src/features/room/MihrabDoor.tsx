@@ -55,7 +55,7 @@ export function MihrabDoor({ door, state, onClick }: Props) {
       type="button"
       className={`mihrab-door mihrab-door--${state}`}
       onClick={onClick}
-      disabled={isActive}
+      disabled={onClick == null}
       aria-label={door.label}
       aria-pressed={isActive}
     >

@@ -40,7 +40,7 @@ export function SignUpForm() {
         <p className="auth-alt">
           Already have one?{" "}
           <Link to="/sign-in" className="link-quiet">
-            Return to the niche.
+            Return to your niche.
           </Link>
         </p>
       </form>

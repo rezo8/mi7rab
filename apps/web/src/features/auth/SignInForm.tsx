@@ -16,8 +16,8 @@ export function SignInForm() {
   return (
     <main id="main" className="page">
       <form className="auth-card" onSubmit={onSubmit} noValidate>
-        <p className="wordmark">mihrab</p>
-        <h1 className="auth-title">Return to the niche</h1>
+        <p className="wordmark">mi7rab</p>
+        <h1 className="auth-title">Return to your niche</h1>
         <Field label="Email" type="email" value={email} onChange={setEmail} autoComplete="email" required />
         <Field
           label="Password"

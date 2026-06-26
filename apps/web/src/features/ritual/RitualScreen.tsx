@@ -177,28 +177,26 @@ export function RitualScreen() {
                 <div className="ritual-wudu-verse">
                   <p className="ritual-wudu-stanza">
                     Best done<br />
-                    at the start of the day,<br />
-                    they say.
+                    at the start of the day<br />
+                    they say
                   </p>
                   <p className="ritual-wudu-stanza">
-                    Not a draft<br />
-                    nor an essay<br />
-                    nor what you thought<br />
-                    it would become.
+                    Not what you planned <br />
+                    but what arrived <br />
                   </p>
                   <p className="ritual-wudu-stanza">
-                    Maybe it spews.<br />
-                    Maybe it flows.<br />
-                    Maybe it falls.<br />
+                    Maybe it spews <br />
+                    Maybe it flows <br />
+                    Maybe it falls <br />
                     Maybe it lands.
                   </p>
                   <p className="ritual-wudu-stanza">
-                    Maybe it may be<br />
+                    Maybe it may be <br />
                     just what you were looking for.
                   </p>
                   <p className="ritual-wudu-stanza">
-                    Only one way to find out.<br />
-                    Clock starts when you do.
+                    Only one way to find out <br />
+                    Clock starts when you do
                   </p>
                 </div>
                 <div className="ritual-privacy" role="note">

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { signOut } from "@/lib/auth/auth-client";
 import { DOORS } from "./doors";
+import type { Door } from "./doors";
 import { MihrabDoor } from "./MihrabDoor";
 import { ReadingStand } from "./ReadingStand";
 import { PagesModal } from "./PagesModal";
 import { FallingStreaks } from "./FallingStreaks";
+import { DoorInterior } from "./DoorInterior";
 
 const STREAKS_ENABLED = import.meta.env.VITE_FALLING_STREAKS === "true";
 
@@ -18,6 +20,7 @@ const wrap = (i: number) => ((i % N) + N) % N;
 export function RoomScene({ onWriteAnother }: Props) {
   const [active, setActive] = useState(0);
   const [showPages, setShowPages] = useState(false);
+  const [enteredDoor, setEnteredDoor] = useState<Door | null>(null);
 
   const goLeft  = useCallback(() => setActive((i) => wrap(i - 1)), []);
   const goRight = useCallback(() => setActive((i) => wrap(i + 1)), []);
@@ -84,11 +87,11 @@ export function RoomScene({ onWriteAnother }: Props) {
         <div className="room-doors-row">
           {slots.map(({ door, state, offset }) => {
             const onClick =
-              offset === -1 ? goLeft
+              offset === 0  ? () => setEnteredDoor(door)
+              : offset === -1 ? goLeft
               : offset ===  1 ? goRight
               : offset === -2 ? () => setActive(wrap(active - 2))
-              : offset ===  2 ? () => setActive(wrap(active + 2))
-              : undefined;
+              : () => setActive(wrap(active + 2));
             return (
               <MihrabDoor
                 key={door.id}
@@ -125,6 +128,11 @@ export function RoomScene({ onWriteAnother }: Props) {
       </button>
 
       {showPages && <PagesModal onClose={() => setShowPages(false)} />}
+
+      {enteredDoor && (
+        <DoorInterior door={enteredDoor} onBack={() => setEnteredDoor(null)} />
+      )}
+
       {STREAKS_ENABLED && (
         <FallingStreaks
           color={DOORS[active]!.colors.streakColor ?? DOORS[active]!.colors.arch}
