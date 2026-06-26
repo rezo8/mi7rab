@@ -6,6 +6,8 @@ import { auth } from "./auth";
 import strategies from "./routes/strategies";
 import profile from "./routes/profile";
 import pages from "./routes/pages";
+import moments from "./routes/moments";
+import tags from "./routes/tags";
 
 export const app = new Hono();
 
@@ -32,5 +34,7 @@ app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 app.route("/api/strategies", strategies);
 app.route("/api/profile", profile);
 app.route("/api/pages", pages);
+app.route("/api/moments", moments);
+app.route("/api/tags", tags);
 
 export default app;

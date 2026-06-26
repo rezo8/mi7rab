@@ -50,3 +50,40 @@ export interface PageDetail {
   createdAt: string;
   strategyTexts: string[];
 }
+
+// ---------------------------------------------------------------------------
+// Shared cultural archive
+// ---------------------------------------------------------------------------
+
+export interface TagItem {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface MomentSource {
+  id: string;
+  type: string;
+  label: string;
+  url: string | null;
+  fileKey: string | null;
+  metadata: unknown;
+  sortOrder: number;
+}
+
+export interface MomentSummary {
+  id: string;
+  doorId: string;
+  title: string;
+  description: string | null;
+  occurredAt: string | null;
+  location: string | null;
+  coverImageKey: string | null;
+  sortOrder: number;
+  tags: TagItem[];
+  createdAt: string;
+}
+
+export interface MomentDetail extends MomentSummary {
+  sources: MomentSource[];
+}
