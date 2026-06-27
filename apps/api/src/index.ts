@@ -8,6 +8,7 @@ import profile from "./routes/profile";
 import pages from "./routes/pages";
 import moments from "./routes/moments";
 import tags from "./routes/tags";
+import storage from "./routes/storage";
 
 export const app = new Hono();
 
@@ -36,5 +37,6 @@ app.route("/api/profile", profile);
 app.route("/api/pages", pages);
 app.route("/api/moments", moments);
 app.route("/api/tags", tags);
+app.route("/api/storage", storage);
 
 export default app;
