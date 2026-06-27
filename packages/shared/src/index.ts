@@ -76,7 +76,7 @@ export interface ActorItem {
   name: string;
   slug: string;
   type: string;
-  role: "criminal" | "victim" | "documenter" | "adjudicator";
+  role: "criminal" | "victim" | "documenter" | "adjudicator" | "supplier";
 }
 
 export interface MomentSummary {

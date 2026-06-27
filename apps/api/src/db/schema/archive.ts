@@ -18,12 +18,13 @@ export const RIGHTS_STATUSES = [
   "cc-by-sa",
   "licensed",    // paid/editorial license obtained
   "permission",  // direct permission from rights holder
+  "own-work",    // self-made image — own photo, self-rendered graphic
   "unknown",     // DEFAULT — not cleared for display
 ] as const;
 export type RightsStatus = (typeof RIGHTS_STATUSES)[number];
 
 export const CLEARED_RIGHTS_STATUSES = [
-  "public-domain", "cc0", "cc-by", "cc-by-sa", "licensed", "permission",
+  "public-domain", "cc0", "cc-by", "cc-by-sa", "licensed", "permission", "own-work",
 ] as const;
 
 export function isDisplayCleared(s: { rightsStatus: string }): boolean {
@@ -33,11 +34,11 @@ export function isDisplayCleared(s: { rightsStatus: string }): boolean {
 export const ACTOR_TYPES = ["person", "organization", "state", "group"] as const;
 export type ActorType = (typeof ACTOR_TYPES)[number];
 
-export const ACTOR_ROLES = ["criminal", "victim", "documenter", "adjudicator"] as const;
+export const ACTOR_ROLES = ["criminal", "victim", "documenter", "adjudicator", "supplier"] as const;
 export type ActorRole = (typeof ACTOR_ROLES)[number];
 
 const DOOR_CHECK = sql`door_id IN ('knowledge','understanding','grief','joy','safety','chaos','strength','hope')`;
-const RIGHTS_CHECK = sql`rights_status IN ('public-domain','cc0','cc-by','cc-by-sa','licensed','permission','unknown')`;
+const RIGHTS_CHECK = sql`rights_status IN ('public-domain','cc0','cc-by','cc-by-sa','licensed','permission','own-work','unknown')`;
 
 /** A cultural moment tied to one of the eight doors. */
 export const moments = pgTable(

@@ -11,7 +11,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/db/seed.ts",
     "db:studio": "drizzle-kit studio",
-    "upload:images": "tsx src/scripts/upload-images.ts"
+    "upload:images": "tsx src/scripts/upload-images.ts",
+    "db:seed-knowledge": "tsx src/db/seed-knowledge.ts"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.21.0",

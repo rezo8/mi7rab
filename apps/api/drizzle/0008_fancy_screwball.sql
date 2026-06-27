@@ -1,0 +1,2 @@
+ALTER TABLE "moment_sources" DROP CONSTRAINT "moment_sources_rights_status_check";--> statement-breakpoint
+ALTER TABLE "moment_sources" ADD CONSTRAINT "moment_sources_rights_status_check" CHECK (rights_status IN ('public-domain','cc0','cc-by','cc-by-sa','licensed','permission','own-work','unknown'));
