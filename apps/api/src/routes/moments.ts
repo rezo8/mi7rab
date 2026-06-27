@@ -52,7 +52,7 @@ async function actorsForMoments(momentIds: string[]): Promise<Map<string, ActorI
   const map = new Map<string, ActorItem[]>();
   for (const row of rows) {
     const list = map.get(row.momentId) ?? [];
-    list.push({ id: row.id, name: row.name, slug: row.slug, type: row.type, role: row.role as ActorItem["role"] });
+    list.push({ id: row.id, name: row.name, slug: row.slug, type: row.type, role: row.role as ActorItem["role"] }); // role is validated at write time
     map.set(row.momentId, list);
   }
   return map;

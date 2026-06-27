@@ -14,7 +14,7 @@ export type SourceType = (typeof SOURCE_TYPES)[number];
 export const ACTOR_TYPES = ["person", "organization", "state", "group"] as const;
 export type ActorType = (typeof ACTOR_TYPES)[number];
 
-export const ACTOR_ROLES = ["criminal", "victim"] as const;
+export const ACTOR_ROLES = ["criminal", "victim", "documenter", "adjudicator"] as const;
 export type ActorRole = (typeof ACTOR_ROLES)[number];
 
 const DOOR_CHECK = sql`door_id IN ('knowledge','understanding','grief','joy','safety','chaos','strength','hope')`;
