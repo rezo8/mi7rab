@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import type { MomentSummary } from "@mihrab/shared";
 import type { Door } from "./doors";
 import { MomentCard } from "./MomentCard";
 import { CardFocusOverlay } from "./CardFocusOverlay";
 import { FallingStreaks } from "./FallingStreaks";
 import { useMoments } from "./useMoments";
+import { signedUrlQueryOptions } from "./useMomentImageUrl";
 
 interface Props {
   door: Door;
@@ -47,6 +49,7 @@ function generateLayouts(count: number): CardLayout[] {
 
 export function DoorInterior({ door, onBack }: Props) {
   const { moments } = useMoments(door.id);
+  const queryClient = useQueryClient();
   const [layouts, setLayouts] = useState<CardLayout[]>([]);
   const [scattered, setScattered] = useState(false);
   // scatterVersion drives the animation — layouts changes alone do NOT retrigger scatter.
@@ -69,14 +72,46 @@ export function DoorInterior({ door, onBack }: Props) {
   // Track current drag position in a ref so incidental re-renders use the right transform.
   const dragPosRef = useRef<{ index: number; x: number; y: number } | null>(null);
 
+  // When moments arrive, fetch all cover image URLs then preload pixels — then scatter once.
   useEffect(() => {
     if (moments.length === 0) return;
-    maxZRef.current = moments.length + 1;
-    setLayouts(generateLayouts(moments.length));
-    setScatterVersion(v => v + 1);
-  }, [moments.length]);
+    let cancelled = false;
 
-  // Only scatter when scatterVersion increments — NOT on every layouts change.
+    const coverKeys = [...new Set(
+      moments.map(m => m.coverImageKey).filter(Boolean) as string[]
+    )];
+
+    async function preloadAndScatter() {
+      // 1. Fetch signed URLs (uses React Query cache — same keys as useMomentImageUrl)
+      const urlResults = await Promise.allSettled(
+        coverKeys.map(key => queryClient.fetchQuery(signedUrlQueryOptions(key)))
+      );
+      if (cancelled) return;
+
+      // 2. Pre-load image pixels into the browser cache
+      const urls = urlResults
+        .filter((r): r is PromiseFulfilledResult<string> => r.status === "fulfilled")
+        .map(r => r.value);
+      await Promise.allSettled(
+        urls.map(url => new Promise<void>(resolve => {
+          const img = new Image();
+          img.onload = img.onerror = () => resolve();
+          img.src = url;
+        }))
+      );
+      if (cancelled) return;
+
+      // 3. Scatter — fired exactly once, no intermediate state flips
+      maxZRef.current = moments.length + 1;
+      setLayouts(generateLayouts(moments.length));
+      setScatterVersion(v => v + 1);
+    }
+
+    void preloadAndScatter();
+    return () => { cancelled = true; };
+  }, [moments.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Scatter animation — resets cards to origin then flies them out.
   useEffect(() => {
     if (scatterVersion === 0) return;
     setScattered(false);

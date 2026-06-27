@@ -162,9 +162,9 @@ const MOMENTS: MomentDef[] = [
     ],
   },
   {
-    title: "British Mandate for Palestine",
-    occurredAt: "1923",
-    location: "Geneva / Palestine",
+    title: "Hope Simpson Report",
+    occurredAt: "1929 - 1930",
+    location: "Palestine",
     coverImageKey: "knowledge/hope-simpson-inquiry.webp",
     description: "The League of Nations ratified the British Mandate, enshrining the Balfour Declaration in international law. Article 4 granted the Jewish Agency a quasi-governmental status with no Arab equivalent. The Hope Simpson Report (1930) later documented the dispossession already underway.",
     tags: ["law", "british-mandate", "what-was-done"],
