@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { db } from "../db";
-import { moments, momentSources, momentTags, tags } from "../db/schema/archive";
-import type { MomentDetail, MomentSource, MomentSummary, TagItem } from "@mihrab/shared";
+import { actors, moments, momentActors, momentSources, momentTags, tags } from "../db/schema/archive";
+import type { ActorItem, MomentDetail, MomentSource, MomentSummary, TagItem } from "@mihrab/shared";
 
 const router = new Hono();
 
@@ -31,6 +31,33 @@ async function tagsForMoments(momentIds: string[]): Promise<Map<string, TagItem[
   return map;
 }
 
+/** Fetch actor rows for a set of moment ids, returns a map of momentId → ActorItem[]. */
+async function actorsForMoments(momentIds: string[]): Promise<Map<string, ActorItem[]>> {
+  if (momentIds.length === 0) return new Map();
+
+  const rows = await db
+    .select({
+      momentId: momentActors.momentId,
+      id: actors.id,
+      name: actors.name,
+      slug: actors.slug,
+      type: actors.type,
+      role: momentActors.role,
+    })
+    .from(momentActors)
+    .innerJoin(actors, eq(actors.id, momentActors.actorId))
+    .where(inArray(momentActors.momentId, momentIds))
+    .orderBy(momentActors.role, actors.name);
+
+  const map = new Map<string, ActorItem[]>();
+  for (const row of rows) {
+    const list = map.get(row.momentId) ?? [];
+    list.push({ id: row.id, name: row.name, slug: row.slug, type: row.type, role: row.role as ActorItem["role"] });
+    map.set(row.momentId, list);
+  }
+  return map;
+}
+
 /**
  * GET /api/moments
  * Query params:
@@ -50,7 +77,7 @@ router.get("/", async (c) => {
 
   const filters = [
     doorParam ? eq(moments.doorId, doorParam) : null,
-    tagId    ? inArray(moments.id, db.select({ id: momentTags.momentId }).from(momentTags).where(eq(momentTags.tagId, tagId))) : null,
+    tagId ? inArray(moments.id, db.select({ id: momentTags.momentId }).from(momentTags).where(eq(momentTags.tagId, tagId))) : null,
   ].filter((f) => f !== null);
 
   const rows = await db
@@ -59,7 +86,11 @@ router.get("/", async (c) => {
     .where(filters.length > 0 ? and(...filters) : undefined)
     .orderBy(asc(moments.sortOrder), asc(moments.createdAt));
 
-  const tagMap = await tagsForMoments(rows.map((r) => r.id));
+  const ids = rows.map((r) => r.id);
+  const [tagMap, actorMap] = await Promise.all([
+    tagsForMoments(ids),
+    actorsForMoments(ids),
+  ]);
 
   const result: MomentSummary[] = rows.map((r) => ({
     id: r.id,
@@ -71,26 +102,28 @@ router.get("/", async (c) => {
     coverImageKey: r.coverImageKey,
     sortOrder: r.sortOrder,
     tags: tagMap.get(r.id) ?? [],
+    actors: actorMap.get(r.id) ?? [],
     createdAt: r.createdAt.toISOString(),
   }));
 
   return c.json(result);
 });
 
-/** GET /api/moments/:id — full moment detail with sources and tags. */
+/** GET /api/moments/:id — full moment detail with sources, tags, and actors. */
 router.get("/:id", async (c) => {
   const id = c.req.param("id");
 
   const [moment] = await db.select().from(moments).where(eq(moments.id, id));
   if (!moment) return c.json({ error: "not_found" }, 404);
 
-  const [sourcesRaw, tagMap] = await Promise.all([
+  const [sourcesRaw, tagMap, actorMap] = await Promise.all([
     db
       .select()
       .from(momentSources)
       .where(eq(momentSources.momentId, id))
       .orderBy(asc(momentSources.sortOrder)),
     tagsForMoments([id]),
+    actorsForMoments([id]),
   ]);
 
   const sources: MomentSource[] = sourcesRaw.map((s) => ({
@@ -113,6 +146,7 @@ router.get("/:id", async (c) => {
     coverImageKey: moment.coverImageKey,
     sortOrder: moment.sortOrder,
     tags: tagMap.get(id) ?? [],
+    actors: actorMap.get(id) ?? [],
     sources,
     createdAt: moment.createdAt.toISOString(),
   };

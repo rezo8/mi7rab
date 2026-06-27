@@ -71,6 +71,14 @@ export interface MomentSource {
   sortOrder: number;
 }
 
+export interface ActorItem {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+  role: "criminal" | "victim";
+}
+
 export interface MomentSummary {
   id: string;
   doorId: string;
@@ -81,6 +89,7 @@ export interface MomentSummary {
   coverImageKey: string | null;
   sortOrder: number;
   tags: TagItem[];
+  actors: ActorItem[];
   createdAt: string;
 }
 

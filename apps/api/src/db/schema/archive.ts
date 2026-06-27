@@ -11,6 +11,12 @@ export type DoorId = (typeof VALID_DOOR_IDS)[number];
 export const SOURCE_TYPES = ["link", "book", "article", "video", "audio", "file", "quote"] as const;
 export type SourceType = (typeof SOURCE_TYPES)[number];
 
+export const ACTOR_TYPES = ["person", "organization", "state", "group"] as const;
+export type ActorType = (typeof ACTOR_TYPES)[number];
+
+export const ACTOR_ROLES = ["criminal", "victim"] as const;
+export type ActorRole = (typeof ACTOR_ROLES)[number];
+
 const DOOR_CHECK = sql`door_id IN ('knowledge','understanding','grief','joy','safety','chaos','strength','hope')`;
 
 /** A cultural moment tied to one of the eight doors. */
@@ -61,6 +67,33 @@ export const tags = pgTable("tags", {
 
 export type TagRow = typeof tags.$inferSelect;
 export type NewTagRow = typeof tags.$inferInsert;
+
+/** A named entity (person, org, state, group) that can be a criminal or victim in moments. */
+export const actors = pgTable("actors", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull().unique(),
+  slug: text("slug").notNull().unique(),
+  type: text("type").notNull().default("organization"),
+  description: text("description"),
+});
+
+export type ActorRow = typeof actors.$inferSelect;
+export type NewActorRow = typeof actors.$inferInsert;
+
+/** Links an actor to a moment with a role (criminal | victim). */
+export const momentActors = pgTable(
+  "moment_actors",
+  {
+    momentId: uuid("moment_id")
+      .notNull()
+      .references(() => moments.id, { onDelete: "cascade" }),
+    actorId: uuid("actor_id")
+      .notNull()
+      .references(() => actors.id, { onDelete: "cascade" }),
+    role: text("role").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.momentId, t.actorId, t.role] })],
+);
 
 /** Many-to-many junction between moments and tags. */
 export const momentTags = pgTable(
