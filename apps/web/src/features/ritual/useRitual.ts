@@ -6,9 +6,10 @@ import type { SavePageBody, SavedPage } from "@mihrab/shared";
 
 interface UseRitualOptions {
   onSaved: () => void;
+  hasEnteredBefore: boolean;
 }
 
-export function useRitual({ onSaved }: UseRitualOptions) {
+export function useRitual({ onSaved, hasEnteredBefore }: UseRitualOptions) {
   const [pendingKey, setPendingKey] = useState<CryptoKey | null>(null);
   const [pendingPhrase, setPendingPhrase] = useState<string[] | null>(null);
   const [pendingText, setPendingText] = useState<string | null>(null);
@@ -33,15 +34,21 @@ export function useRitual({ onSaved }: UseRitualOptions) {
       const key = await loadKey();
 
       if (key == null) {
-        // No key in IndexedDB — generate a new one and show the reveal modal.
+        if (hasEnteredBefore) {
+          // Returning user on a new device — key is missing, don't generate a new one.
+          // Old pages would become permanently unreadable if we used a different key.
+          setKeyMissing(true);
+          return;
+        }
+        // First-time user: generate a new key and show the reveal modal.
         const { phrase, key: newKey } = await generateWritingKey();
         setPendingKey(newKey);
         setPendingPhrase(phrase);
         setPendingText(text);
         setPendingStrategyIds(strategyIds);
-        // Don't call onSaved yet — wait for the user to confirm.
         return;
       }
+      setKeyMissing(false);
 
       await doEncryptAndSave(text, key, strategyIds);
     } catch (e) {

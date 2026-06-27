@@ -22,7 +22,7 @@ export function RitualScreen() {
   const navigate = useNavigate();
   const reducedMotion = usePrefersReducedMotion();
 
-  const { writtenToday, isPending: profilePending, invalidate } = useProfile();
+  const { profile, writtenToday, isPending: profilePending, invalidate } = useProfile();
   const { data: strategyData, isPending: stratPending, isError: stratError, isFetching: stratFetching, refetch: refetchStrategy } = useStrategy();
 
   const [uiState, setUiState] = useState<UiState>("loading");
@@ -38,6 +38,7 @@ export function RitualScreen() {
   const isDone = uiState === "writing" && timer.phase === "done";
 
   const ritual = useRitual({
+    hasEnteredBefore: profile?.hasEnteredBefore ?? false,
     onSaved: () => {
       invalidate();
       timer.reset();
@@ -239,19 +240,39 @@ export function RitualScreen() {
 
         {isDone && (
           <div className="ritual-actions">
-            <p className="ritual-actions-text">
-              Save your pages — they&apos;ll be encrypted and kept.
-              <br />
-              Or let them go — the writing still happened.
-            </p>
-            <button
-              type="button"
-              className="btn"
-              disabled={ritual.isSaving}
-              onClick={handleSave}
-            >
-              {ritual.isSaving ? "Saving…" : "Save"}
-            </button>
+            {ritual.keyMissing ? (
+              <>
+                <p className="ritual-actions-text">
+                  Your encryption key isn&apos;t on this device.
+                  <br />
+                  Use your recovery phrase to restore it — or discard this session.
+                </p>
+                <button
+                  type="button"
+                  className="btn"
+                  disabled
+                  title="Restore your key first"
+                >
+                  Save
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="ritual-actions-text">
+                  Save your pages — they&apos;ll be encrypted and kept.
+                  <br />
+                  Or let them go — the writing still happened.
+                </p>
+                <button
+                  type="button"
+                  className="btn"
+                  disabled={ritual.isSaving}
+                  onClick={handleSave}
+                >
+                  {ritual.isSaving ? "Saving…" : "Save"}
+                </button>
+              </>
+            )}
             <button
               type="button"
               className="link-quiet"

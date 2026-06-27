@@ -79,6 +79,15 @@ export interface ActorItem {
   role: "criminal" | "victim" | "documenter" | "adjudicator" | "supplier";
 }
 
+export interface MomentImage {
+  id: string;
+  fileKey: string;
+  caption: string | null;
+  isCover: boolean;
+  rightsStatus: string;
+  sortOrder: number;
+}
+
 export interface MomentSummary {
   id: string;
   doorId: string;
@@ -86,10 +95,12 @@ export interface MomentSummary {
   description: string | null;
   occurredAt: string | null;
   location: string | null;
+  /** Derived from images — the fileKey of the image with isCover=true, or null. */
   coverImageKey: string | null;
   sortOrder: number;
   tags: TagItem[];
   actors: ActorItem[];
+  images: MomentImage[];
   createdAt: string;
 }
 

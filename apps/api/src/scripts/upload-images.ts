@@ -1,5 +1,5 @@
 /**
- * Upload and resize images from /image_sources/{door} to GCS.
+ * Upload images from /image_sources/{door} to GCS as WebP (original dimensions, no resize).
  *
  * Usage (from apps/api/):
  *   GCP_KEY_FILE=gcp-key.json GCP_BUCKET=mi7rab_resources GCP_PROJECT_ID=mi7rab \
@@ -8,8 +8,8 @@
  * door defaults to "knowledge". Images are stored as:
  *   {door}/{slug}.webp
  *
- * Resize strategy: `contain` with black background — the card bg is #07090b so
- * letterboxing blends in, and all document/map content is preserved without cropping.
+ * Images are converted to WebP for compression but NOT resized — the frontend handles
+ * display sizing (arch clipPath for mini cards, object-fit: contain for focus view).
  *
  * PDFs: first page extracted via ImageMagick (`magick`), must be installed.
  *   brew install imagemagick
@@ -35,9 +35,6 @@ const execFileAsync = promisify(execFile);
 const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".tiff", ".bmp", ".JPG", ".JPEG", ".PNG", ".WEBP"]);
 const PDF_EXTS   = new Set([".pdf", ".PDF"]);
 
-// Portrait: arch proportions 100×197 ≈ 1:2. Landscape: rotated card, so 1200×600.
-const PORTRAIT = { w: 600,  h: 1200, fit: "contain" as const }; // letterbox, no crop
-const LANDSCAPE = { w: 1200, h: 600,  fit: "cover"   as const }; // fills rotated arch
 const WEBP_QUALITY = 85;
 const LOW_RES_THRESHOLD = 400; // warn if source is under this on either dimension
 
@@ -56,14 +53,7 @@ async function imageToWebp(inputPath: string): Promise<{ data: Buffer; width: nu
   const w = meta.width ?? 0;
   const h = meta.height ?? 0;
 
-  const isLandscape = w > h;
-  const { w: tw, h: th, fit } = isLandscape ? LANDSCAPE : PORTRAIT;
-
   const data = await img
-    .resize(tw, th, {
-      fit,
-      background: { r: 7, g: 9, b: 11, alpha: 1 }, // #07090b — matches card bg
-    })
     .webp({ quality: WEBP_QUALITY })
     .toBuffer();
 
@@ -114,9 +104,9 @@ async function main() {
 
   console.log(`\nSource: image_sources/${door}/`);
   console.log(`Target: gs://${bucket}/${door}/*.webp`);
-  console.log(`Resize: portrait→contain 600×1200 | landscape→cover 1200×600\n`);
+  console.log(`Mode:   WebP conversion at original dimensions (no resize)\n`);
 
-  const mapping: Record<string, { fileKey: string; orientation: "landscape" | "portrait" }> = {};
+  const mapping: Record<string, { fileKey: string; dimensions: string }> = {};
   const warnings: string[] = [];
   const failed: string[] = [];
 
@@ -137,10 +127,9 @@ async function main() {
         warnings.push(`${file}: ${width}×${height} — low res, may look soft at focus size`);
       }
 
-      const orientation: "landscape" | "portrait" = width > height ? "landscape" : "portrait";
       await gcs.file(fileKey).save(data, { contentType: "image/webp", resumable: false });
-      mapping[file] = { fileKey, orientation };
-      console.log(`✓ (${width}×${height} ${orientation} → ${(data.length / 1024).toFixed(0)} KB)`);
+      mapping[file] = { fileKey, dimensions: `${width}×${height}` };
+      console.log(`✓ (${width}×${height} → ${(data.length / 1024).toFixed(0)} KB)`);
     } catch (err) {
       failed.push(file);
       console.log(`✗ ${(err as Error).message}`);

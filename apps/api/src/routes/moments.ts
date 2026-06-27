@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { db } from "../db";
-import { actors, moments, momentActors, momentSources, momentTags, tags } from "../db/schema/archive";
-import type { ActorItem, MomentDetail, MomentSource, MomentSummary, TagItem } from "@mihrab/shared";
+import { actors, momentImages, moments, momentActors, momentSources, momentTags, tags } from "../db/schema/archive";
+import type { ActorItem, MomentDetail, MomentImage, MomentSource, MomentSummary, TagItem } from "@mihrab/shared";
 
 const router = new Hono();
 
@@ -58,6 +58,25 @@ async function actorsForMoments(momentIds: string[]): Promise<Map<string, ActorI
   return map;
 }
 
+/** Fetch supplementary image rows for a set of moment ids, returns a map of momentId → MomentImage[]. */
+async function imagesForMoments(momentIds: string[]): Promise<Map<string, MomentImage[]>> {
+  if (momentIds.length === 0) return new Map();
+
+  const rows = await db
+    .select()
+    .from(momentImages)
+    .where(inArray(momentImages.momentId, momentIds))
+    .orderBy(asc(momentImages.sortOrder));
+
+  const map = new Map<string, MomentImage[]>();
+  for (const row of rows) {
+    const list = map.get(row.momentId) ?? [];
+    list.push({ id: row.id, fileKey: row.fileKey, caption: row.caption, isCover: row.isCover, rightsStatus: row.rightsStatus, sortOrder: row.sortOrder });
+    map.set(row.momentId, list);
+  }
+  return map;
+}
+
 /**
  * GET /api/moments
  * Query params:
@@ -87,24 +106,29 @@ router.get("/", async (c) => {
     .orderBy(asc(moments.sortOrder), asc(moments.createdAt));
 
   const ids = rows.map((r) => r.id);
-  const [tagMap, actorMap] = await Promise.all([
+  const [tagMap, actorMap, imageMap] = await Promise.all([
     tagsForMoments(ids),
     actorsForMoments(ids),
+    imagesForMoments(ids),
   ]);
 
-  const result: MomentSummary[] = rows.map((r) => ({
-    id: r.id,
-    doorId: r.doorId,
-    title: r.title,
-    description: r.description,
-    occurredAt: r.occurredAt,
-    location: r.location,
-    coverImageKey: r.coverImageKey,
-    sortOrder: r.sortOrder,
-    tags: tagMap.get(r.id) ?? [],
-    actors: actorMap.get(r.id) ?? [],
-    createdAt: r.createdAt.toISOString(),
-  }));
+  const result: MomentSummary[] = rows.map((r) => {
+    const images = imageMap.get(r.id) ?? [];
+    return {
+      id: r.id,
+      doorId: r.doorId,
+      title: r.title,
+      description: r.description,
+      occurredAt: r.occurredAt,
+      location: r.location,
+      coverImageKey: images.find(img => img.isCover)?.fileKey ?? null,
+      sortOrder: r.sortOrder,
+      tags: tagMap.get(r.id) ?? [],
+      actors: actorMap.get(r.id) ?? [],
+      images,
+      createdAt: r.createdAt.toISOString(),
+    };
+  });
 
   return c.json(result);
 });
@@ -116,7 +140,7 @@ router.get("/:id", async (c) => {
   const [moment] = await db.select().from(moments).where(eq(moments.id, id));
   if (!moment) return c.json({ error: "not_found" }, 404);
 
-  const [sourcesRaw, tagMap, actorMap] = await Promise.all([
+  const [sourcesRaw, tagMap, actorMap, imageMap] = await Promise.all([
     db
       .select()
       .from(momentSources)
@@ -124,6 +148,7 @@ router.get("/:id", async (c) => {
       .orderBy(asc(momentSources.sortOrder)),
     tagsForMoments([id]),
     actorsForMoments([id]),
+    imagesForMoments([id]),
   ]);
 
   const sources: MomentSource[] = sourcesRaw.map((s) => ({
@@ -136,6 +161,7 @@ router.get("/:id", async (c) => {
     sortOrder: s.sortOrder,
   }));
 
+  const images = imageMap.get(id) ?? [];
   const detail: MomentDetail = {
     id: moment.id,
     doorId: moment.doorId,
@@ -143,10 +169,11 @@ router.get("/:id", async (c) => {
     description: moment.description,
     occurredAt: moment.occurredAt,
     location: moment.location,
-    coverImageKey: moment.coverImageKey,
+    coverImageKey: images.find(img => img.isCover)?.fileKey ?? null,
     sortOrder: moment.sortOrder,
     tags: tagMap.get(id) ?? [],
     actors: actorMap.get(id) ?? [],
+    images,
     sources,
     createdAt: moment.createdAt.toISOString(),
   };

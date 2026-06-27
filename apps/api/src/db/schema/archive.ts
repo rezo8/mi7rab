@@ -1,4 +1,4 @@
-import { check, integer, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, check, integer, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const VALID_DOOR_IDS = [
@@ -50,7 +50,6 @@ export const moments = pgTable(
     description: text("description"),
     occurredAt: text("occurred_at"),
     location: text("location"),
-    coverImageKey: text("cover_image_key"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
@@ -126,6 +125,27 @@ export const momentActors = pgTable(
   },
   (t) => [primaryKey({ columns: [t.momentId, t.actorId, t.role] })],
 );
+
+/** Images for a moment — one marked is_cover is the primary display image. */
+export const momentImages = pgTable(
+  "moment_images",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    momentId: uuid("moment_id")
+      .notNull()
+      .references(() => moments.id, { onDelete: "cascade" }),
+    fileKey: text("file_key").notNull(),
+    caption: text("caption"),
+    isCover: boolean("is_cover").notNull().default(false),
+    rightsStatus: text("rights_status").notNull().default("unknown"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  () => [check("moment_images_rights_status_check", RIGHTS_CHECK)],
+);
+
+export type MomentImageRow = typeof momentImages.$inferSelect;
+export type NewMomentImageRow = typeof momentImages.$inferInsert;
 
 /** Many-to-many junction between moments and tags. */
 export const momentTags = pgTable(

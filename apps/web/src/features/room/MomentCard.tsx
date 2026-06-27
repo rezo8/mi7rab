@@ -1,5 +1,7 @@
-import type { CSSProperties } from "react";
+import React, { useId, type CSSProperties } from "react";
+import type { MomentSummary } from "@mihrab/shared";
 import type { Door } from "./doors";
+import { useMomentImageUrl } from "./useMomentImageUrl";
 
 const ARCH_D =
   "M 10,202 L 10,140 C 10,48 34,5 60,5 C 86,5 110,48 110,140 L 110,202 Z";
@@ -36,22 +38,37 @@ function BackPattern({ uid, color }: { uid: string; color: string }) {
 
 interface Props {
   door: Door;
+  moment?: MomentSummary | null;
   faceUp: boolean;
   style?: CSSProperties;
+  cardRef?: (el: HTMLDivElement | null) => void;
   onClick: () => void;
+  onPointerDown?: (e: React.PointerEvent<HTMLDivElement>) => void;
+  onPointerMove?: (e: React.PointerEvent<HTMLDivElement>) => void;
+  onPointerUp?: (e: React.PointerEvent<HTMLDivElement>) => void;
 }
 
-export function MomentCard({ door, faceUp, style, onClick }: Props) {
+export function MomentCard({ door, moment, faceUp, style, cardRef, onClick, onPointerDown, onPointerMove, onPointerUp }: Props) {
+  const uid = useId().replace(/:/g, "-");
   const { colors } = door;
-  const uid = `${door.id}-${faceUp ? "f" : "b"}-${Math.round(Math.random() * 1e6)}`;
+
+  // Only fetch the signed URL when this card is face-up and has a cover image.
+  const { data: imageUrl } = useMomentImageUrl(
+    faceUp && moment?.coverImageKey ? moment.coverImageKey : null,
+  );
 
   return (
     <div
+      ref={cardRef}
       className="moment-card"
       role="button"
       tabIndex={0}
       onClick={onClick}
       onKeyDown={(e) => e.key === "Enter" && onClick()}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onDragStart={(e) => e.preventDefault()}
       style={style}
     >
       <svg viewBox="0 0 120 205" className="moment-card-svg" aria-hidden="true">
@@ -59,7 +76,23 @@ export function MomentCard({ door, faceUp, style, onClick }: Props) {
 
         {faceUp ? (
           <>
-            <path d={ARCH_D} fill="#000" />
+            {imageUrl ? (
+              <>
+                <defs>
+                  <clipPath id={`arch-clip-${uid}`}>
+                    <path d={ARCH_D} />
+                  </clipPath>
+                </defs>
+                <image
+                  href={imageUrl}
+                  x="10" y="5" width="100" height="197"
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath={`url(#arch-clip-${uid})`}
+                />
+              </>
+            ) : (
+              <path d={ARCH_D} fill="#000" />
+            )}
             <path d={TIER} fill="none" stroke={colors.tile} strokeWidth="0.8" opacity="0.5" />
             <path d={CROWN} fill="none" stroke={colors.crown} strokeWidth="0.7" opacity="0.7" />
             {NICHES.map((d, i) => (

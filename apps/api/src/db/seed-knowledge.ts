@@ -9,7 +9,7 @@
 import "dotenv/config";
 import { eq } from "drizzle-orm";
 import { db, pool } from "./index";
-import { actors, momentActors, momentSources, momentTags, moments, tags } from "./schema/archive";
+import { actors, momentActors, momentImages, momentSources, momentTags, moments, tags } from "./schema/archive";
 
 // ---------------------------------------------------------------------------
 // Actors
@@ -95,6 +95,12 @@ interface SourceDef {
   rightsStatus?: string;
 }
 
+interface ImageDef {
+  fileKey: string;
+  caption?: string | null;
+  rightsStatus?: string;
+}
+
 interface MomentDef {
   title: string;
   occurredAt: string | null;
@@ -104,6 +110,7 @@ interface MomentDef {
   tags: string[];
   actors: { slug: string; role: string }[];
   sources: SourceDef[];
+  images?: ImageDef[];
 }
 
 const MOMENTS: MomentDef[] = [
@@ -457,6 +464,9 @@ const MOMENTS: MomentDef[] = [
     title: "Oslo Accords",
     occurredAt: "1993",
     location: "Oslo / Washington",
+    // TODO: replace with the actual Oslo Agreement signing photo
+    // crop this https://www.arabnews.com/sites/default/files/pictures/April/3922771/2025/oslo_accords_peace_promise_1993-1_treated-small.jpg
+    // dawn of peace is so perfect
     coverImageKey: "knowledge/palestine-abc-area-opt.webp",
     description: "The Oslo Declaration of Principles created the Palestinian Authority and divided the West Bank into Areas A, B, and C — with C (~60%) remaining under full Israeli control. Oslo institutionalized the fragmentation of Palestinian territory and deferred final-status issues indefinitely.",
     tags: ["treaty", "occupation"],
@@ -644,12 +654,34 @@ async function main() {
       description: def.description,
       occurredAt: def.occurredAt,
       location: def.location,
-      coverImageKey: def.coverImageKey,
       sortOrder: i + 1,
     }).returning();
     const moment = inserted[0]!;
 
-    // Sources
+    // Images — coverImageKey becomes the first entry with isCover=true, then supplementary images follow
+    let imgOrder = 0;
+    if (def.coverImageKey) {
+      await db.insert(momentImages).values({
+        momentId: moment.id,
+        fileKey: def.coverImageKey,
+        caption: null,
+        isCover: true,
+        rightsStatus: "unknown",
+        sortOrder: imgOrder++,
+      });
+    }
+    for (const img of def.images ?? []) {
+      await db.insert(momentImages).values({
+        momentId: moment.id,
+        fileKey: img.fileKey,
+        caption: img.caption ?? null,
+        isCover: false,
+        rightsStatus: img.rightsStatus ?? "unknown",
+        sortOrder: imgOrder++,
+      });
+    }
+
+    // Sources (documents, links, articles — not images)
     for (let si = 0; si < def.sources.length; si++) {
       const src = def.sources[si]!;
       await db.insert(momentSources).values({

@@ -64,6 +64,20 @@
       "when": 1782590400004,
       "tag": "0008_fancy_screwball",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1782590400005,
+      "tag": "0009_moment_images",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1782590400006,
+      "tag": "0010_moment_images_is_cover",
+      "breakpoints": true
     }
   ]
 }
