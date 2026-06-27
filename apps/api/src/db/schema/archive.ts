@@ -11,6 +11,25 @@ export type DoorId = (typeof VALID_DOOR_IDS)[number];
 export const SOURCE_TYPES = ["link", "book", "article", "video", "audio", "file", "quote"] as const;
 export type SourceType = (typeof SOURCE_TYPES)[number];
 
+export const RIGHTS_STATUSES = [
+  "public-domain",
+  "cc0",
+  "cc-by",
+  "cc-by-sa",
+  "licensed",    // paid/editorial license obtained
+  "permission",  // direct permission from rights holder
+  "unknown",     // DEFAULT — not cleared for display
+] as const;
+export type RightsStatus = (typeof RIGHTS_STATUSES)[number];
+
+export const CLEARED_RIGHTS_STATUSES = [
+  "public-domain", "cc0", "cc-by", "cc-by-sa", "licensed", "permission",
+] as const;
+
+export function isDisplayCleared(s: { rightsStatus: string }): boolean {
+  return (CLEARED_RIGHTS_STATUSES as readonly string[]).includes(s.rightsStatus);
+}
+
 export const ACTOR_TYPES = ["person", "organization", "state", "group"] as const;
 export type ActorType = (typeof ACTOR_TYPES)[number];
 
@@ -18,6 +37,7 @@ export const ACTOR_ROLES = ["criminal", "victim", "documenter", "adjudicator"] a
 export type ActorRole = (typeof ACTOR_ROLES)[number];
 
 const DOOR_CHECK = sql`door_id IN ('knowledge','understanding','grief','joy','safety','chaos','strength','hope')`;
+const RIGHTS_CHECK = sql`rights_status IN ('public-domain','cc0','cc-by','cc-by-sa','licensed','permission','unknown')`;
 
 /** A cultural moment tied to one of the eight doors. */
 export const moments = pgTable(
@@ -41,19 +61,30 @@ export type MomentRow = typeof moments.$inferSelect;
 export type NewMomentRow = typeof moments.$inferInsert;
 
 /** A source attached to a moment — link, scanned file, quote, etc. */
-export const momentSources = pgTable("moment_sources", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  momentId: uuid("moment_id")
-    .notNull()
-    .references(() => moments.id, { onDelete: "cascade" }),
-  type: text("type").notNull().default("link"),
-  label: text("label").notNull(),
-  url: text("url"),
-  fileKey: text("file_key"),
-  metadata: jsonb("metadata"),
-  sortOrder: integer("sort_order").notNull().default(0),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+export const momentSources = pgTable(
+  "moment_sources",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    momentId: uuid("moment_id")
+      .notNull()
+      .references(() => moments.id, { onDelete: "cascade" }),
+    type: text("type").notNull().default("link"),
+    label: text("label").notNull(),
+    url: text("url"),
+    fileKey: text("file_key"),
+    metadata: jsonb("metadata"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    // Image rights tracking — default "unknown" acts as the display gate
+    rightsStatus: text("rights_status").notNull().default("unknown"),
+    licenseUrl: text("license_url"),
+    attributionText: text("attribution_text"),
+    sourceArchive: text("source_archive"),
+    sourceUrl: text("source_url"),
+    rightsNotes: text("rights_notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  () => [check("moment_sources_rights_status_check", RIGHTS_CHECK)],
+);
 
 export type MomentSourceRow = typeof momentSources.$inferSelect;
 export type NewMomentSourceRow = typeof momentSources.$inferInsert;
