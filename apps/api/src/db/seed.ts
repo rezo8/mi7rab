@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { strategies } from "./schema/app";
+import { strategies } from "./schema/strategies";
 
 interface DeckFile {
   deck: string;

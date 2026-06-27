@@ -3,7 +3,8 @@ import { z } from "zod";
 import { asc, and, eq, inArray } from "drizzle-orm";
 import { auth } from "../auth";
 import { db } from "../db";
-import { pages, profiles, strategies } from "../db/schema/app";
+import { pages, profiles } from "../db/schema/ritual";
+import { strategies } from "../db/schema/strategies";
 import type { SavePageBody, SavedPage, PageSummary, PageDetail } from "@mihrab/shared";
 
 const savePageSchema = z.object({

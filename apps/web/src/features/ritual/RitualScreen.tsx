@@ -188,11 +188,11 @@ export function RitualScreen() {
                     Maybe it spews <br />
                     Maybe it flows <br />
                     Maybe it falls <br />
-                    Maybe it lands.
+                    Maybe it lands
                   </p>
                   <p className="ritual-wudu-stanza">
                     Maybe it may be <br />
-                    just what you were looking for.
+                    just what you were looking for
                   </p>
                   <p className="ritual-wudu-stanza">
                     Only one way to find out <br />

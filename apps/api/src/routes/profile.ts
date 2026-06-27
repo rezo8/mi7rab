@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { eq, max } from "drizzle-orm";
 import { auth } from "../auth";
 import { db } from "../db";
-import { pages, profiles } from "../db/schema/app";
+import { pages, profiles } from "../db/schema/ritual";
 import type { UserProfile } from "@mihrab/shared";
 
 const router = new Hono();

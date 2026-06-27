@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { db } from "../db";
-import { tags } from "../db/schema/app";
+import { tags } from "../db/schema/archive";
 import type { TagItem } from "@mihrab/shared";
 
 const router = new Hono();

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { db } from "../db";
-import { moments, momentSources, momentTags, tags } from "../db/schema/app";
+import { moments, momentSources, momentTags, tags } from "../db/schema/archive";
 import type { MomentDetail, MomentSource, MomentSummary, TagItem } from "@mihrab/shared";
 
 const router = new Hono();

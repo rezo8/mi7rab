@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import type { ApiErrorBody, Strategy } from "@mihrab/shared";
 import { db } from "../db";
-import { strategies } from "../db/schema/app";
+import { strategies } from "../db/schema/strategies";
 import { cached } from "../redis/cache";
 import { rateLimit } from "../middleware/rate-limit";
 
