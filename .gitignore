@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # test / coverage
 coverage/
+
+# local image assets (not committed — stored in object storage)
+image_sources/
