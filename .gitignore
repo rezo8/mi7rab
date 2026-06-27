@@ -30,3 +30,4 @@ coverage/
 
 # local image assets (not committed — stored in object storage)
 image_sources/
+apps/api/gcp-key.json
