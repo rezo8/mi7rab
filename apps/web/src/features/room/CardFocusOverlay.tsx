@@ -1,12 +1,14 @@
+import { useState } from "react";
 import type { MomentImage, MomentSummary } from "@mihrab/shared";
 import type { Door } from "./doors";
 import { useMomentImageUrl } from "./useMomentImageUrl";
 
-function SupplementaryImage({ img, door }: { img: MomentImage; door: Door }) {
+function SupplementaryImage({ img, onClick }: { img: MomentImage; onClick: () => void }) {
   const { data: url } = useMomentImageUrl(img.fileKey);
   if (!url) return null;
   return (
-    <figure className="supp-image">
+    <figure className="supp-image" onClick={onClick} role="button" tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && onClick()}>
       <img src={url} alt={img.caption ?? ""} className="supp-image-img" />
       {img.caption && <figcaption className="supp-image-caption">{img.caption}</figcaption>}
     </figure>
@@ -43,7 +45,10 @@ interface Props {
 
 export function CardFocusOverlay({ door, moment, onDismiss }: Props) {
   const { colors } = door;
-  const { data: imageUrl } = useMomentImageUrl(moment.coverImageKey);
+  const [featuredKey, setFeaturedKey] = useState<string | null>(null);
+
+  const featuredFileKey = featuredKey ?? moment.coverImageKey;
+  const { data: imageUrl } = useMomentImageUrl(featuredFileKey);
 
   const reference = [moment.occurredAt, moment.location]
     .filter(Boolean)
@@ -56,6 +61,8 @@ export function CardFocusOverlay({ door, moment, onDismiss }: Props) {
     },
     {},
   );
+
+  const galleryImages = moment.images.filter((img) => img.fileKey !== featuredFileKey);
 
   return (
     <div className="card-focus-backdrop" onClick={onDismiss}>
@@ -129,6 +136,14 @@ export function CardFocusOverlay({ door, moment, onDismiss }: Props) {
             ← back to {door.labelAr}
           </button>
         </div>
+
+        {galleryImages.length > 0 && (
+          <div className="card-focus-gallery">
+            {galleryImages.map((img) => (
+              <SupplementaryImage key={img.id} img={img} onClick={() => setFeaturedKey(img.fileKey)} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

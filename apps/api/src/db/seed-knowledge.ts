@@ -151,6 +151,9 @@ const MOMENTS: MomentDef[] = [
     occurredAt: "1917-11-02",
     location: "London",
     coverImageKey: "knowledge/balfour-declaration-unmarked.webp",
+    images: [
+      { fileKey: "knowledge/balfour-walled-off-hotel.webp", caption: "Banksy's Walled Off Hotel, Bethlehem — built adjacent to the separation wall on the centenary of the Balfour Declaration" },
+    ],
     description: "A letter from British Foreign Secretary Arthur James Balfour to Lord Walter Rothschild, pledging British support for \"the establishment in Palestine of a national home for the Jewish people\" — while the majority Arab population was not consulted. One sentence disposed of a nation.",
     tags: ["treaty", "british-mandate", "what-was-done"],
     actors: [
@@ -198,6 +201,9 @@ const MOMENTS: MomentDef[] = [
     occurredAt: "1936–1939",
     location: "Mandatory Palestine",
     coverImageKey: "knowledge/great-arab-revolt.webp",
+    images: [
+      { fileKey: "knowledge/arab-revolt-in-palestine-palestinian-arabs-british-abou-ghosh.webp", caption: "Palestinian Arabs and British soldiers, Abu Ghosh, c. 1936" },
+    ],
     description: "Three years of armed uprising against British rule and Zionist immigration. Britain's response included collective punishment, demolition of the Jaffa Old City, and the execution of hundreds. Official Notice 115/36 (16 Jun 1936) ordered the demolition of Jaffa's old quarter under a \"town planning\" pretext.",
     tags: ["uprising", "what-was-done", "british-mandate"],
     actors: [
@@ -276,6 +282,9 @@ const MOMENTS: MomentDef[] = [
     occurredAt: "1946-07-22",
     location: "Jerusalem",
     coverImageKey: "knowledge/july-22-king-david-hotel.webp",
+    images: [
+      { fileKey: "knowledge/king-david-wanted.webp", caption: "British wanted poster for Irgun leaders including Menachem Begin, issued after the bombing" },
+    ],
     description: "The Irgun bombed the southern wing of the King David Hotel — the headquarters of British civil and military administration in Palestine — killing 91 people (~41 Palestinian/Arab, 28 British, 17 Jewish). The stated motive: destroy Operation Agatha documents seized from the Jewish Agency.",
     tags: ["militancy", "irgun", "bombing", "apparatus"],
     actors: [
@@ -292,6 +301,9 @@ const MOMENTS: MomentDef[] = [
     occurredAt: "1947-11-29",
     location: "Lake Success, NY",
     coverImageKey: "knowledge/un-partition-map-1947.webp",
+    images: [
+      { fileKey: "knowledge/un-partition-plan-vote.webp", caption: "UN General Assembly vote on Resolution 181, 29 November 1947" },
+    ],
     description: "The UN General Assembly adopted Resolution 181, partitioning Mandatory Palestine. The proposed Jewish state (~56% of the land) would contain a nearly equal Arab population (~45%). The Arab majority was not consulted in the decision that disposed of their country.",
     tags: ["un-resolution", "partition", "what-was-done"],
     actors: [
@@ -307,6 +319,9 @@ const MOMENTS: MomentDef[] = [
     occurredAt: "1948-03",
     location: "Palestine",
     coverImageKey: "knowledge/plan-dalet.webp",
+    images: [
+      { fileKey: "knowledge/deir-yasin-massacre.webp", caption: "Deir Yassin, April 1948 — one of the most documented massacres carried out under Plan Dalet" },
+    ],
     description: "The Haganah's operational plan for the conquest of Palestine, issued March 1948 — weeks before the British Mandate ended. Plan Dalet provided the military doctrine for the systematic depopulation of Arab towns and villages: the Nakba.",
     tags: ["nakba", "what-was-done"],
     actors: [
@@ -340,6 +355,9 @@ const MOMENTS: MomentDef[] = [
     occurredAt: "1948-12-11",
     location: "Paris",
     coverImageKey: "knowledge/kns1-return-eng.webp",
+    images: [
+      { fileKey: "knowledge/un-general-assembly-resolution-194-1948-unsco.webp", caption: "UN General Assembly Resolution 194 (III), 11 December 1948 — UNSCO document" },
+    ],
     description: "UN General Assembly Resolution 194 affirmed that Palestinian refugees wishing to return to their homes and live at peace with their neighbours should be permitted to do so at the earliest practicable date. It has been affirmed annually since 1948 — and never implemented.",
     tags: ["un-resolution", "right-of-return"],
     actors: [
@@ -386,7 +404,7 @@ const MOMENTS: MomentDef[] = [
     title: "Law of Return",
     occurredAt: "1950",
     location: "Israel",
-    coverImageKey: null,
+    coverImageKey: "knowledge/nakba-man-camp-800-1-768x432.webp",
     description: "The Law of Return granted every Jewish person the right to immigrate to Israel — while Palestinians expelled in 1948 were denied the right to return to their homes under Resolution 194. Paired with the Citizenship Law (1952), it enshrined differential rights in law.",
     tags: ["law", "citizenship"],
     actors: [
@@ -404,6 +422,9 @@ const MOMENTS: MomentDef[] = [
     occurredAt: "1956",
     location: "Israel (military court)",
     coverImageKey: "knowledge/kafir-qasim-defendants.webp",
+    images: [
+      { fileKey: "knowledge/kafr-quasim-memorial-israel.webp", caption: "Kafr Qasim memorial" },
+    ],
     description: "Israeli Border Police killed 49 Palestinian civilians returning from the fields in Kafr Qasim, unaware a curfew had been imposed hours earlier. The military court's ruling by Justice Benjamin Halevy established the \"black flag\" doctrine: a manifestly illegal order must be disobeyed. The massacre belongs to Grief; the ruling belongs to Knowledge.",
     tags: ["law", "ruling"],
     actors: [
@@ -464,10 +485,10 @@ const MOMENTS: MomentDef[] = [
     title: "Oslo Accords",
     occurredAt: "1993",
     location: "Oslo / Washington",
-    // TODO: replace with the actual Oslo Agreement signing photo
-    // crop this https://www.arabnews.com/sites/default/files/pictures/April/3922771/2025/oslo_accords_peace_promise_1993-1_treated-small.jpg
-    // dawn of peace is so perfect
-    coverImageKey: "knowledge/palestine-abc-area-opt.webp",
+    coverImageKey: "knowledge/oslo-accords-peace-promise-1993-1-treated-small.webp",
+    images: [
+      { fileKey: "knowledge/palestine-abc-area-opt.webp", caption: "Palestinian Authority territory divisions — Areas A, B, and C" },
+    ],
     description: "The Oslo Declaration of Principles created the Palestinian Authority and divided the West Bank into Areas A, B, and C — with C (~60%) remaining under full Israeli control. Oslo institutionalized the fragmentation of Palestinian territory and deferred final-status issues indefinitely.",
     tags: ["treaty", "occupation"],
     actors: [
