@@ -1,5 +1,6 @@
 /**
- * Seed script for the Knowledge door — 31 moments, 21 actors, 36 tags.
+ * Seed script for the Knowledge door — 44 moments, 32 actors, 51 tags.
+ * Pairings: Palestine ↔ State of Israel (31 moments); Indigenous North America ↔ United States (13 moments).
  * Idempotent: upserts actors/tags, deletes and reinserts all knowledge moments.
  *
  * Usage (from apps/api/):
@@ -37,6 +38,19 @@ const ACTORS_SEED = [
   { name: "Israeli High Court of Justice", slug: "israeli-supreme-court", type: "organization" },
   { name: "International Court of Justice", slug: "icj",              type: "organization" },
   { name: "Palestinians",               slug: "palestinians",          type: "group" },
+
+  // ── Indigenous North America ─────────────────────────────────────────────
+  { name: "Native Americans (umbrella)", slug: "native-americans",          type: "group" },
+  { name: "Cherokee Nation",            slug: "cherokee-nation",            type: "group" },
+  { name: "Lakota / Sioux nations",     slug: "lakota",                     type: "group" },
+  { name: "Ponca Nation",               slug: "ponca-nation",               type: "group" },
+  { name: "United States",             slug: "united-states",              type: "state" },
+  { name: "United States Army",        slug: "us-army",                    type: "organization" },
+  { name: "United States Supreme Court", slug: "us-supreme-court",         type: "organization" },
+  { name: "U.S. District Court",       slug: "us-district-court",          type: "organization" },
+  { name: "Bureau of Indian Affairs",  slug: "bureau-of-indian-affairs",   type: "organization" },
+  { name: "State of California",       slug: "state-of-california",        type: "state" },
+  { name: "Treaty (Ridge) faction",    slug: "ridge-faction",              type: "group" },
 ] as const;
 
 // ---------------------------------------------------------------------------
@@ -80,6 +94,23 @@ const TAGS_SEED: { slug: string; name: string }[] = [
   { slug: "displacement",    name: "Displacement" },
   { slug: "negev",           name: "Negev" },
   { slug: "icj",             name: "ICJ" },
+
+  // ── Indigenous North America ─────────────────────────────────────────────
+  { slug: "doctrine",        name: "Doctrine" },
+  { slug: "root",            name: "Root" },
+  { slug: "removal",         name: "Removal" },
+  { slug: "press",           name: "Press" },
+  { slug: "counter-erasure", name: "Counter-Erasure" },
+  { slug: "fraud",           name: "Fraud" },
+  { slug: "genocide",        name: "Genocide" },
+  { slug: "broken-treaty",   name: "Broken Treaty" },
+  { slug: "boarding-schools", name: "Boarding Schools" },
+  { slug: "personhood",      name: "Personhood" },
+  { slug: "allotment",       name: "Allotment" },
+  { slug: "massacre",        name: "Massacre" },
+  { slug: "military-record", name: "Military Record" },
+  { slug: "black-hills",     name: "Black Hills" },
+  { slug: "present-day",     name: "Present Day" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -626,6 +657,215 @@ const MOMENTS: MomentDef[] = [
       { type: "article", label: "Haaretz — Crimson Thread route map, Jordan Valley, 2025", rightsStatus: "unknown" },
     ],
   },
+
+  // ── Indigenous North America ↔ United States (13 moments) ────────────────
+
+  {
+    title: "Johnson v. M'Intosh / Doctrine of Discovery",
+    occurredAt: "1823",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "Chief Justice John Marshall's Supreme Court opinion established the Doctrine of Discovery as federal law: European discovery of North America extinguished Indigenous title, leaving only a \"right of occupancy\" at the sovereign's discretion. No shot was fired in the courtroom. The entire dispossession of a continent was accomplished with text, and the ruling remains binding precedent.",
+    tags: ["doctrine", "law", "root", "what-was-done"],
+    actors: [
+      { slug: "us-supreme-court", role: "criminal" },
+      { slug: "united-states",    role: "criminal" },
+      { slug: "native-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Johnson v. M'Intosh, 21 U.S. (8 Wheat.) 543 (1823) — Supreme Court opinion", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Indian Removal Act",
+    occurredAt: "1830-05-28",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "Signed by President Andrew Jackson on May 28, 1830, the Indian Removal Act authorized the forced relocation of Indigenous nations from their ancestral homelands east of the Mississippi to designated \"Indian Territory\" to the west. The statute's text framed expropriation as voluntary exchange. Its implementation produced the Trail of Tears.",
+    tags: ["law", "removal", "what-was-done"],
+    actors: [
+      { slug: "united-states",    role: "criminal" },
+      { slug: "native-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Indian Removal Act, 21st Congress, Sess. 1, ch. 148, 4 Stat. 411 (1830)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "The Cherokee Phoenix",
+    occurredAt: "1828–1834",
+    location: "New Echota, Cherokee Nation",
+    coverImageKey: null,
+    description: "Founded by the Cherokee Nation in New Echota, the Cherokee Phoenix was the first Indigenous-language newspaper published in North America — printed in both English and Sequoyah's Cherokee syllabary. The Nation used it to document treaty violations and assert sovereignty on the written record. In 1835, Georgia militia seized and destroyed the press. The issues that survived are the record.",
+    tags: ["press", "counter-erasure", "what-was-done"],
+    actors: [
+      { slug: "cherokee-nation", role: "documenter" },
+      { slug: "cherokee-nation", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Cherokee Phoenix, Vol. 1 No. 1, February 21, 1828 — front page (English + Cherokee syllabary)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Treaty of New Echota",
+    occurredAt: "1835-12-29",
+    location: "New Echota, Cherokee Nation",
+    coverImageKey: null,
+    description: "Signed on December 29, 1835 by the \"Treaty Party\" — approximately 100 Cherokee men acting without authority from Principal Chief John Ross or the National Council — the Treaty of New Echota ceded all Cherokee lands east of the Mississippi. The National Council had passed a law making unauthorized land cession punishable by death. The United States ratified the treaty anyway. It became the legal instrument for the Trail of Tears. Approximately 4,000 Cherokees died in the removal.",
+    tags: ["treaty", "fraud", "removal", "what-was-done"],
+    actors: [
+      { slug: "united-states",    role: "criminal" },
+      { slug: "ridge-faction",    role: "criminal" },
+      { slug: "cherokee-nation",  role: "victim" },
+      { slug: "native-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Treaty of New Echota, December 29, 1835 — 7 Stat. 478", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "California State-Sponsored Killings",
+    occurredAt: "1846–1873",
+    location: "California",
+    coverImageKey: null,
+    description: "In his January 1851 address to the California legislature, Governor Peter Burnett declared that \"a war of extermination will continue to be waged between the races until the Indian race becomes extinct.\" The state reimbursed militia for scalps and heads; federal funds underwrote the campaigns. California's Native population fell from an estimated 150,000 in 1846 to approximately 30,000 by 1873. The militia payment records remain in the state archive.",
+    tags: ["genocide", "what-was-done"],
+    actors: [
+      { slug: "state-of-california", role: "criminal" },
+      { slug: "united-states",       role: "criminal" },
+      { slug: "native-americans",    role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Governor Peter Burnett, State of the State address, January 1851 — California Legislature Journal", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Fort Laramie Treaty",
+    occurredAt: "1868-04-29",
+    location: "Fort Laramie, Wyoming Territory",
+    coverImageKey: null,
+    description: "Signed April 29, 1868, the Fort Laramie Treaty guaranteed the Lakota and allied nations \"absolute and undisturbed use\" of the Great Sioux Reservation — including the Black Hills — \"so long as the grass shall grow.\" Gold was discovered in the Black Hills in 1874. Congress abrogated the treaty and seized the Hills by statute in 1877. The original treaty text is in the National Archives. The grass still grows.",
+    tags: ["treaty", "broken-treaty", "land", "what-was-done"],
+    actors: [
+      { slug: "united-states",    role: "criminal" },
+      { slug: "lakota",           role: "victim" },
+      { slug: "native-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Fort Laramie Treaty, April 29, 1868 — 15 Stat. 635 (National Archives)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Carlisle Indian Industrial School",
+    occurredAt: "1879–1918",
+    location: "Carlisle, Pennsylvania",
+    coverImageKey: null,
+    description: "Founded by Captain Richard Henry Pratt under the motto \"Kill the Indian, save the man,\" Carlisle was the prototype for a federal network of 408 boarding schools. Children were stripped of their names, languages, and clothing on arrival; enrollment ledgers record the before-and-after renaming in columns. The school cemetery holds children who never returned home.",
+    tags: ["boarding-schools", "erasure", "apparatus", "what-was-done"],
+    actors: [
+      { slug: "united-states",           role: "criminal" },
+      { slug: "bureau-of-indian-affairs", role: "criminal" },
+      { slug: "native-americans",         role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Carlisle Indian School enrollment ledgers and student photographs, 1879–1918 — Dickinson College / National Archives", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Standing Bear v. Crook",
+    occurredAt: "1879-05-12",
+    location: "Omaha, Nebraska (U.S. District Court)",
+    coverImageKey: null,
+    description: "On May 12, 1879, U.S. District Judge Elmer Dundy ruled that \"an Indian is a person within the meaning of the law of the United States.\" Standing Bear of the Ponca Nation had been arrested while attempting to return to his homeland to bury his son. His courtroom testimony — \"I am a man. The same God made us both\" — entered the record. The ruling was never appealed to limit its precedent. It did not stop removal.",
+    tags: ["law", "personhood", "counter-erasure"],
+    actors: [
+      { slug: "us-district-court", role: "adjudicator" },
+      { slug: "ponca-nation",      role: "victim" },
+      { slug: "native-americans",  role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Standing Bear v. Crook, 5 Dill. 453 (D. Neb. 1879) — Judge Dundy's opinion and Standing Bear's testimony", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "The Dawes Act",
+    occurredAt: "1887-02-08",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "Signed February 8, 1887, the Dawes General Allotment Act broke up communally-held Indigenous lands into individual parcels — 160 acres per head of household — and sold the remaining \"surplus\" to non-Indian settlers. Between 1887 and 1934, Indigenous land holdings declined from approximately 138 million acres to 48 million. The Bureau of Indian Affairs administered the allotment schedule. The statute called this \"civilization.\"",
+    tags: ["law", "allotment", "land", "what-was-done"],
+    actors: [
+      { slug: "united-states",           role: "criminal" },
+      { slug: "bureau-of-indian-affairs", role: "criminal" },
+      { slug: "native-americans",         role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Dawes General Allotment Act, 24 Stat. 388 (February 8, 1887)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Wounded Knee",
+    occurredAt: "1890-12-29",
+    location: "Pine Ridge Reservation, South Dakota",
+    coverImageKey: null,
+    description: "On December 29, 1890, soldiers of the U.S. 7th Cavalry Regiment killed between 250 and 300 Lakota men, women, and children at Wounded Knee Creek. The Army's own after-action reports record what happened. The United States subsequently awarded 20 Medals of Honor to participants — the largest single-event Medal of Honor award in U.S. history. The medals have not been rescinded.",
+    tags: ["massacre", "military-record", "what-was-done"],
+    actors: [
+      { slug: "us-army",          role: "criminal" },
+      { slug: "lakota",           role: "victim" },
+      { slug: "native-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "U.S. Army after-action reports, Wounded Knee, December 29, 1890 — National Archives", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Indian Citizenship Act",
+    occurredAt: "1924-06-02",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "Signed by President Calvin Coolidge on June 2, 1924, the Indian Citizenship Act extended U.S. citizenship to all Indigenous people born within the United States — without their consent and without consultation with any tribal nation. Many states responded by barring Native voters through literacy tests and poll taxes. Arizona and New Mexico did not permit Native voting until 1948.",
+    tags: ["law", "citizenship", "what-was-done"],
+    actors: [
+      { slug: "united-states",    role: "criminal" },
+      { slug: "native-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Indian Citizenship Act, 43 Stat. 253 (June 2, 1924)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "United States v. Sioux Nation",
+    occurredAt: "1980-06-30",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "On June 30, 1980, the United States Supreme Court affirmed that the Black Hills had been taken from the Lakota unconstitutionally in 1877, in violation of the Fort Laramie Treaty. The Court awarded $102 million — the 1877 value plus interest. The Lakota refused the payment: \"The Black Hills are not for sale.\" The money has accrued interest in a federal trust account for over forty years. The record admits the theft. The land has not been returned.",
+    tags: ["law", "black-hills", "broken-treaty"],
+    actors: [
+      { slug: "us-supreme-court", role: "adjudicator" },
+      { slug: "lakota",           role: "victim" },
+      { slug: "native-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "United States v. Sioux Nation of Indians, 448 U.S. 371 (1980)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Federal Indian Boarding School Initiative Report",
+    occurredAt: "2022",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "In May 2022, Interior Secretary Deb Haaland — the first Native American to serve as a U.S. Cabinet secretary — released the Federal Indian Boarding School Initiative Investigative Report, identifying 408 federal Indian boarding schools across 37 states operating between 1819 and 1969, and 53 burial sites at or near former schools. It is the United States government documenting, in its own words and its own archive, the systematic erasure of Indigenous children.",
+    tags: ["boarding-schools", "counter-erasure", "present-day"],
+    actors: [
+      { slug: "united-states",           role: "documenter" },
+      { slug: "bureau-of-indian-affairs", role: "criminal" },
+      { slug: "native-americans",         role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Federal Indian Boarding School Initiative Investigative Report, U.S. Dept. of the Interior, May 2022", rightsStatus: "unknown" },
+    ],
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -665,7 +905,7 @@ async function main() {
   console.log(`  ${deleted.length} moments cleared.`);
 
   // 4. Insert moments with sources, tags, and actors
-  console.log("  Inserting 31 moments…");
+  console.log("  Inserting 44 moments…");
   for (let i = 0; i < MOMENTS.length; i++) {
     const def = MOMENTS[i]!;
 
