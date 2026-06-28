@@ -13,9 +13,12 @@ const ZOOM_MAX  = 1.0;
 
 interface BloodStreak {
   x: number;
+  drawnToX: number;
   currentY: number;
   endY: number;
   vy: number;
+  vx: number;
+  ax: number;
   width: number;
   alpha: number;
   drawnTo: number;
@@ -100,11 +103,15 @@ export function SafetySceneMickey({ door, onBack }: Props) {
       else               x = Math.random() * W;
 
       const startY = -50 - Math.random() * 80;
+      const vx = (Math.random() - 0.5) * 0.35;
       streaksRef.current.push({
         x,
+        drawnToX: x,
         currentY: startY,
         endY:     window.innerHeight + 10,
         vy:       1.2 + Math.random() * 2.2,
+        vx,
+        ax:       (Math.random() - 0.5) * 0.012,
         width:    1.5 + Math.random() * 3.0,
         alpha:    0.60 + Math.random() * 0.35,
         drawnTo:  startY,
@@ -133,16 +140,21 @@ export function SafetySceneMickey({ door, onBack }: Props) {
       for (const s of streaksRef.current) {
         if (s.done) continue;
         s.currentY += s.vy;
+        s.vx += s.ax;
+        // Gently reverse ax when drift gets too wide, keeping paths natural
+        if (Math.abs(s.vx) > 0.45) s.ax *= -0.7;
+        s.x += s.vx;
         if (s.currentY >= s.endY) { s.currentY = s.endY; s.done = true; }
         if (s.currentY > s.drawnTo + 0.4) {
           offCtx.beginPath();
           offCtx.strokeStyle = `${BLOOD_COLOR} ${s.alpha})`;
           offCtx.lineWidth   = s.width;
           offCtx.lineCap     = "round";
-          offCtx.moveTo(s.x, s.drawnTo);
+          offCtx.moveTo(s.drawnToX, s.drawnTo);
           offCtx.lineTo(s.x, s.currentY);
           offCtx.stroke();
-          s.drawnTo = s.currentY;
+          s.drawnTo   = s.currentY;
+          s.drawnToX  = s.x;
         }
       }
 
