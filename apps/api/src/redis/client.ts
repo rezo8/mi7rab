@@ -12,6 +12,8 @@ export const redis = new Redis(env.REDIS_URL, {
   // Connect on first use, not at import — keeps one-shot scripts (e.g. the
   // Better Auth schema-gen CLI) from hanging on an idle open socket.
   lazyConnect: true,
+  // rediss:// (Upstash) requires explicit TLS
+  ...(env.REDIS_URL.startsWith("rediss://") && { tls: {} }),
 });
 
 redis.on("error", (err) => {

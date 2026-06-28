@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
+import { serveStatic } from "@hono/node-server/serve-static";
 import { env } from "./env";
 import { auth } from "./auth";
 import strategies from "./routes/strategies";
@@ -38,5 +39,12 @@ app.route("/api/pages", pages);
 app.route("/api/moments", moments);
 app.route("/api/tags", tags);
 app.route("/api/storage", storage);
+
+if (env.NODE_ENV === "production") {
+  // Hashed asset files — browsers can cache these aggressively
+  app.use("/assets/*", serveStatic({ root: "./web-dist" }));
+  // SPA fallback — client-side router handles all non-API paths
+  app.use("*", serveStatic({ path: "./web-dist/index.html" }));
+}
 
 export default app;

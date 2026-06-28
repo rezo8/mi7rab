@@ -5,8 +5,12 @@ let _storage: Storage | null = null;
 function getStorage(): Storage {
   if (!_storage) {
     const keyFile = process.env.GCP_KEY_FILE;
-    if (!keyFile) throw new Error("GCP_KEY_FILE not set");
-    _storage = new Storage({ keyFilename: keyFile, projectId: process.env.GCP_PROJECT_ID });
+    const keyJson = process.env.GCP_KEY_JSON;
+    _storage = new Storage({
+      projectId: process.env.GCP_PROJECT_ID,
+      ...(keyFile && { keyFilename: keyFile }),
+      ...(keyJson && { credentials: JSON.parse(keyJson) }),
+    });
   }
   return _storage;
 }
