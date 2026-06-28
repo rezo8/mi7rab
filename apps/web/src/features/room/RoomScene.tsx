@@ -7,6 +7,7 @@ import { ReadingStand } from "./ReadingStand";
 import { PagesModal } from "./PagesModal";
 import { FallingStreaks } from "./FallingStreaks";
 import { DoorInterior } from "./DoorInterior";
+import { SafetyScene } from "./SafetyScene";
 
 const STREAKS_ENABLED = import.meta.env.VITE_FALLING_STREAKS === "true";
 
@@ -129,7 +130,10 @@ export function RoomScene({ onWriteAnother }: Props) {
 
       {showPages && <PagesModal onClose={() => setShowPages(false)} />}
 
-      {enteredDoor && (
+      {enteredDoor && enteredDoor.id === "safety" && (
+        <SafetyScene door={enteredDoor} onBack={() => setEnteredDoor(null)} />
+      )}
+      {enteredDoor && enteredDoor.id !== "safety" && (
         <DoorInterior door={enteredDoor} onBack={() => setEnteredDoor(null)} />
       )}
 

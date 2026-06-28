@@ -61,13 +61,14 @@ export const DOORS: Door[] = [
     },
   },
   {
-    id: "safety", label: "Safety", labelAr: "الأمان",
+    id: "safety", label: "Safety", labelAr: "أمان",
     colors: {
-      // Amber/candlelight — the candle, the prayer-light, home
-      arch: "#c9a24b", archDim: "#5a4018",
-      tile: "#806828", tileDim: "#2e200a",
-      crown: "#a07830", crownDim: "#402c12",
-      fill: "#0f0c06", glow: "rgba(201,162,75,0.32)",
+      // White/pearl — the false peace, the empty room
+      arch: "#d0d0d0", archDim: "#707070",
+      tile: "#b0b0b0", tileDim: "#3a3a3a",
+      crown: "#c0c0c0", crownDim: "#505050",
+      fill: "#ececec", glow: "rgba(220,220,220,0.55)",
+      bloomColor: "#a0a0a0",
     },
   },
   {
