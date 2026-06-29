@@ -16,13 +16,14 @@ const EnvSchema = z.object({
   BETTER_AUTH_URL: z.string().url(),
 
   // Comma-separated browser origins -> string[] (CORS allowlist + CSRF trusted origins).
+  // Trailing slashes are stripped so "https://example.com/" and "https://example.com" both match.
   CORS_ORIGINS: z
     .string()
     .default("http://localhost:5173")
     .transform((s) =>
       s
         .split(",")
-        .map((x) => x.trim())
+        .map((x) => x.trim().replace(/\/$/, ""))
         .filter(Boolean),
     ),
 });

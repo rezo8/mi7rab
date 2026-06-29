@@ -16,12 +16,12 @@ export const app = new Hono();
 // Sensible security headers on every response.
 app.use("*", secureHeaders());
 
-// CORS for the browser app — exact origin allowlist, credentials enabled (cookies).
-// Must be registered before the routes it protects (covers /api/auth/* too).
+// CORS — normalizes trailing slashes before matching, reflects the original origin back.
 app.use(
   "/api/*",
   cors({
-    origin: env.CORS_ORIGINS,
+    origin: (origin) =>
+      env.CORS_ORIGINS.includes(origin.replace(/\/$/, "")) ? origin : null,
     credentials: true,
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
