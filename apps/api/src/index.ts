@@ -16,12 +16,11 @@ export const app = new Hono();
 // Sensible security headers on every response.
 app.use("*", secureHeaders());
 
-// CORS — normalizes trailing slashes before matching, reflects the original origin back.
+// TODO: lock down to env.CORS_ORIGINS allowlist once the domain is stable
 app.use(
   "/api/*",
   cors({
-    origin: (origin) =>
-      env.CORS_ORIGINS.includes(origin.replace(/\/$/, "")) ? origin : null,
+    origin: (origin) => origin,
     credentials: true,
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

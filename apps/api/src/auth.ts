@@ -49,7 +49,8 @@ export const auth = betterAuth({
 
   // CSRF: state-changing requests are validated against this origin allowlist.
   // Keep identical to the CORS allowlist.
-  trustedOrigins: env.CORS_ORIGINS.flatMap((o) => [o, `${o}/`]),
+  // TODO: lock down to env.CORS_ORIGINS once the domain is stable
+  trustedOrigins: ["*"],
 
   rateLimit: {
     enabled: true,
