@@ -67,11 +67,12 @@ export function RitualScreen() {
     }
   }, [sessionPending, session, navigate]);
 
-  // Derive initial screen once the profile loads.
+  // Derive initial screen once the profile loads — only fires during the loading phase.
+  // Must not re-run on session refetches (window focus) or it resets state mid-writing.
   useEffect(() => {
-    if (profilePending || !session?.user) return;
+    if (uiState !== "loading" || profilePending || !session?.user) return;
     setUiState(writtenToday ? "entered" : "strategy");
-  }, [profilePending, writtenToday, session?.user]);
+  }, [uiState, profilePending, writtenToday, session?.user]);
 
   const handleFirstInput = useCallback(() => {
     if (uiState !== "strategy") return;
