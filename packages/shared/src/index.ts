@@ -107,3 +107,19 @@ export interface MomentSummary {
 export interface MomentDetail extends MomentSummary {
   sources: MomentSource[];
 }
+
+// ---------------------------------------------------------------------------
+// Understanding door
+// ---------------------------------------------------------------------------
+
+export interface UnderstandingEssaySummary {
+  id: string;
+  title: string;
+  hook: string | null;
+  sortOrder: number;
+}
+
+export interface UnderstandingEssayDetail extends UnderstandingEssaySummary {
+  bodyMd: string | null;
+  linkedMoments: MomentSummary[];
+}

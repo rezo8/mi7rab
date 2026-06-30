@@ -10,6 +10,7 @@ import pages from "./routes/pages";
 import moments from "./routes/moments";
 import tags from "./routes/tags";
 import storage from "./routes/storage";
+import understanding from "./routes/understanding";
 
 export const app = new Hono();
 
@@ -38,6 +39,7 @@ app.route("/api/pages", pages);
 app.route("/api/moments", moments);
 app.route("/api/tags", tags);
 app.route("/api/storage", storage);
+app.route("/api/understanding", understanding);
 
 if (env.NODE_ENV === "production") {
   // Hashed asset files — browsers can cache these aggressively
