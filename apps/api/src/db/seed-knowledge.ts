@@ -1,6 +1,6 @@
 /**
- * Seed script for the Knowledge door — 44 moments, 32 actors, 51 tags.
- * Pairings: Palestine ↔ State of Israel (31 moments); Indigenous North America ↔ United States (13 moments).
+ * Seed script for the Knowledge door — 45 moments, 34 actors, 52 tags.
+ * Pairings: Palestine ↔ State of Israel (32 moments); Indigenous North America ↔ United States (13 moments).
  * Idempotent: upserts actors/tags, deletes and reinserts all knowledge moments.
  *
  * Usage (from apps/api/):
@@ -38,6 +38,8 @@ const ACTORS_SEED = [
   { name: "Israeli High Court of Justice", slug: "israeli-supreme-court", type: "organization" },
   { name: "International Court of Justice", slug: "icj",              type: "organization" },
   { name: "Palestinians",               slug: "palestinians",          type: "group" },
+  { name: "Baruch Goldstein",           slug: "baruch-goldstein",      type: "person" },
+  { name: "Kach",                       slug: "kach",                  type: "group" },
 
   // ── Indigenous North America ─────────────────────────────────────────────
   { name: "Native Americans (umbrella)", slug: "native-americans",          type: "group" },
@@ -94,6 +96,7 @@ const TAGS_SEED: { slug: string; name: string }[] = [
   { slug: "displacement",    name: "Displacement" },
   { slug: "negev",           name: "Negev" },
   { slug: "icj",             name: "ICJ" },
+  { slug: "settler-violence", name: "Settler Violence" },
 
   // ── Indigenous North America ─────────────────────────────────────────────
   { slug: "doctrine",        name: "Doctrine" },
@@ -531,6 +534,29 @@ const MOMENTS: MomentDef[] = [
     ],
   },
   {
+    title: "Ibrahimi Mosque Massacre",
+    occurredAt: "1994-02-25",
+    location: "Hebron (Al-Khalil)",
+    coverImageKey: "knowledge/baruch-goldstein.webp",
+    images: [
+      { fileKey: "knowledge/baruch-goldstein-grave-mourners.webp", caption: "Goldstein's grave in Kiryat Arba — inscribed as a saint and martyr, it became a settler pilgrimage site. Streets and buildings were named after him. The shrine encodes a strand of settler ideology in which violence against Palestinians is treated as an act of piety." },
+      { fileKey: "knowledge/hebron-cave-of-the-patriarchs.webp",   caption: "The Ibrahimi Mosque / Cave of the Patriarchs, Hebron — site of the massacre" },
+      { fileKey: "knowledge/palestinians-demonstrate-in-the-20th-anniversary-of-the-massacre-of-hebron.webp", caption: "Palestinians demonstrating on the 20th anniversary of the massacre, 2014" },
+    ],
+    description: "On February 25, 1994 — the 15th of Ramadan — American-Israeli settler Baruch Goldstein entered the Ibrahimi Mosque in Hebron at dawn prayer and opened fire on worshippers, killing 29 Palestinians and wounding more than 125. Goldstein, a physician and member of the Kach movement, was beaten to death by survivors. Israel's official response condemned the massacre — then imposed closures and movement restrictions predominantly on Palestinians, not on the settler population from whose ranks the killer came. Goldstein's grave in Kiryat Arba was inscribed: \"Here lies the saint, Dr. Baruch Kappel Goldstein, blessed be the memory of the righteous and holy man, may the Lord avenge his blood, who devoted his soul to the Jews, Jewish religion and Jewish land. His hands are innocent and his heart is pure.\" The grave became a place of settler pilgrimage; streets and buildings were named in his honor. What the grave records is not aberration — it is a live strain of settler ideology in which mass killing of Palestinians is venerated as martyrdom.",
+    tags: ["massacre", "settlements", "occupation", "settler-violence"],
+    actors: [
+      { slug: "baruch-goldstein", role: "criminal" },
+      { slug: "kach",             role: "criminal" },
+      { slug: "israel",           role: "criminal" },
+      { slug: "palestinians",     role: "victim" },
+    ],
+    sources: [
+      { type: "file",    label: "Baruch Goldstein, perpetrator of the Ibrahimi Mosque massacre", fileKey: "knowledge/baruch-goldstein.webp", metadata: { orientation: "portrait" }, rightsStatus: "unknown" },
+      { type: "article", label: "Shamgar Commission Report on the Cave of the Patriarchs Massacre, 1994", rightsStatus: "unknown" },
+    ],
+  },
+  {
     title: "Separation Wall",
     occurredAt: "2002",
     location: "West Bank",
@@ -645,7 +671,10 @@ const MOMENTS: MomentDef[] = [
     title: "Crimson Thread",
     occurredAt: "2025–2026",
     location: "Jordan Valley (Buqe'aa Plain)",
-    coverImageKey: null,
+    coverImageKey: "knowledge/operation-crimson-thread.webp",
+    images: [
+      { fileKey: "knowledge/palestine-farmer-khairallah-bani-odeh-atouf-muhammad-ateeq-mee-displaced-from-atoof.webp", caption: "Khairallah Bani Odeh Atouf, Muhammad Ateeq — Palestinian farmers displaced from Atoof village in the Jordan Valley" },
+    ],
     description: "Israeli construction of a new wall and road system in the Buqe'aa plain of the Jordan Valley, revealed by Haaretz, will sever approximately 300 Palestinian farming families from their land. The record continues to be made.",
     tags: ["land", "occupation", "wall"],
     actors: [
@@ -654,6 +683,7 @@ const MOMENTS: MomentDef[] = [
       { slug: "palestinians", role: "victim" },
     ],
     sources: [
+      { type: "file",    label: "Operation Crimson Thread route map, Jordan Valley", fileKey: "knowledge/operation-crimson-thread.webp", metadata: { orientation: "landscape" }, rightsStatus: "unknown" },
       { type: "article", label: "Haaretz — Crimson Thread route map, Jordan Valley, 2025", rightsStatus: "unknown" },
     ],
   },
@@ -905,7 +935,7 @@ async function main() {
   console.log(`  ${deleted.length} moments cleared.`);
 
   // 4. Insert moments with sources, tags, and actors
-  console.log("  Inserting 44 moments…");
+  console.log("  Inserting 45 moments…");
   for (let i = 0; i < MOMENTS.length; i++) {
     const def = MOMENTS[i]!;
 

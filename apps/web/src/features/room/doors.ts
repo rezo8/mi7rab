@@ -16,11 +16,12 @@ export interface Door {
   label:   string;
   labelAr: string;
   colors:  DoorColors;
+  implemented?: boolean;
 }
 
-export const DOORS: Door[] = [
+const ALL_DOORS: Door[] = [
   {
-    id: "knowledge", label: "Knowledge", labelAr: "المعرفة",
+    id: "knowledge", label: "Knowledge", labelAr: "المعرفة", implemented: true,
     colors: {
       // Indigo/cobalt — ink, scholarship, the written word
       arch: "#6080c0", archDim: "#1e2a52",
@@ -61,7 +62,7 @@ export const DOORS: Door[] = [
     },
   },
   {
-    id: "safety", label: "Safety", labelAr: "أمان",
+    id: "safety", label: "Safety", labelAr: "أمان", implemented: true,
     colors: {
       // White/pearl — the false peace, the empty room
       arch: "#d0d0d0", archDim: "#707070",
@@ -102,3 +103,5 @@ export const DOORS: Door[] = [
     },
   },
 ];
+
+export const DOORS: Door[] = ALL_DOORS.filter(d => d.implemented);
