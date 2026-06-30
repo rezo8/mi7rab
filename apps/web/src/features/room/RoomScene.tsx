@@ -36,9 +36,9 @@ export function RoomScene({ onWriteAnother }: Props) {
   }, [goLeft, goRight]);
 
   type SlotState = "active" | "adjacent" | "far";
-  // Five visible slots: [-2, -1, 0, +1, +2] from active
+  // Show up to 5 slots [-2,-1,0,+1,+2], but cap at |offset| < N to avoid duplicates.
   const slots: { door: (typeof DOORS)[0]; state: SlotState; offset: number }[] =
-    [-2, -1, 0, 1, 2].map((offset) => ({
+    [-2, -1, 0, 1, 2].filter((o) => Math.abs(o) < N).map((offset) => ({
       door: DOORS[wrap(active + offset)]!,
       state:
         offset === 0
@@ -95,7 +95,7 @@ export function RoomScene({ onWriteAnother }: Props) {
               : () => setActive(wrap(active + 2));
             return (
               <MihrabDoor
-                key={door.id}
+                key={offset}
                 door={door}
                 state={state}
                 onClick={onClick}

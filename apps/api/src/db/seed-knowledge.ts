@@ -1,6 +1,6 @@
 /**
- * Seed script for the Knowledge door — 45 moments, 34 actors, 52 tags.
- * Pairings: Palestine ↔ State of Israel (32 moments); Indigenous North America ↔ United States (13 moments).
+ * Seed script for the Knowledge door — 68 moments, 44 actors, 62 tags.
+ * Pairings: Palestine ↔ State of Israel (32 moments); Indigenous North America ↔ United States (13 moments); United States ↔ African Americans (23 moments).
  * Idempotent: upserts actors/tags, deletes and reinserts all knowledge moments.
  *
  * Usage (from apps/api/):
@@ -53,6 +53,18 @@ const ACTORS_SEED = [
   { name: "Bureau of Indian Affairs",  slug: "bureau-of-indian-affairs",   type: "organization" },
   { name: "State of California",       slug: "state-of-california",        type: "state" },
   { name: "Treaty (Ridge) faction",    slug: "ridge-faction",              type: "group" },
+
+  // ── African Americans ─────────────────────────────────────────────────────
+  { name: "African Americans",                slug: "african-americans",         type: "group" },
+  { name: "Colony of Virginia",               slug: "colonial-virginia",         type: "state" },
+  { name: "British Crown",                    slug: "british-crown",             type: "state" },
+  { name: "Confederate States of America",    slug: "confederate-states",        type: "state" },
+  { name: "Southern US states (umbrella)",    slug: "southern-states",           type: "group" },
+  { name: "State of Louisiana",               slug: "state-of-louisiana",        type: "state" },
+  { name: "Federal Housing Administration",   slug: "fha",                       type: "organization" },
+  { name: "Home Owners' Loan Corporation",    slug: "holc",                      type: "organization" },
+  { name: "US Public Health Service",         slug: "us-public-health-service",  type: "organization" },
+  { name: "Federal Bureau of Investigation",  slug: "fbi",                       type: "organization" },
 ] as const;
 
 // ---------------------------------------------------------------------------
@@ -114,6 +126,18 @@ const TAGS_SEED: { slug: string; name: string }[] = [
   { slug: "military-record", name: "Military Record" },
   { slug: "black-hills",     name: "Black Hills" },
   { slug: "present-day",     name: "Present Day" },
+
+  // ── African Americans ─────────────────────────────────────────────────────
+  { slug: "record",             name: "Record" },
+  { slug: "founding",           name: "Founding" },
+  { slug: "literacy",           name: "Literacy" },
+  { slug: "statistics",         name: "Statistics" },
+  { slug: "disenfranchisement", name: "Disenfranchisement" },
+  { slug: "redlining",          name: "Redlining" },
+  { slug: "migration",          name: "Migration" },
+  { slug: "archive",            name: "Archive" },
+  { slug: "surveillance",       name: "Surveillance" },
+  { slug: "mass-incarceration", name: "Mass Incarceration" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -896,6 +920,368 @@ const MOMENTS: MomentDef[] = [
       { type: "article", label: "Federal Indian Boarding School Initiative Investigative Report, U.S. Dept. of the Interior, May 2022", rightsStatus: "unknown" },
     ],
   },
+
+  // ── United States ↔ African Americans (23 moments) ───────────────────────
+
+  {
+    title: "The 1619 White Lion — First Cargo",
+    occurredAt: "1619",
+    location: "Point Comfort, Virginia",
+    coverImageKey: null,
+    description: "In late August 1619 the English privateer White Lion arrived at Point Comfort in the Virginia Colony and traded \"20 and odd Negroes\" — Angolans captured from the Portuguese slave ship São João Bautista — to colonial planters for food and supplies. John Rolfe's letter to Sir Edwin Sandys is the colonial record: people entered as cargo. The log of a transaction is the document on which the entire subsequent apparatus rests.",
+    tags: ["origin", "record", "what-was-done"],
+    actors: [
+      { slug: "colonial-virginia", role: "criminal" },
+      { slug: "british-crown",     role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "John Rolfe to Sir Edwin Sandys, January 1619/20 — Virginia Company Records (Library of Congress / British Public Record Office)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Virginia Slave Code",
+    occurredAt: "1705",
+    location: "Colony of Virginia",
+    coverImageKey: null,
+    description: "Virginia's \"Act Concerning Servants and Slaves\" (1705) consolidated earlier piecemeal statutes into a comprehensive slave code: enslavement was hereditary, lifelong, and racial. Enslaved people were legally property — could be \"bought, sold, or bequeathed like any personal estate.\" The Act stripped free Black Virginians of civil rights, prohibited the enslaved from bearing arms or assembling, and barred their testimony in court. The architecture of American racial slavery was built on this text.",
+    tags: ["law", "apparatus", "what-was-done"],
+    actors: [
+      { slug: "colonial-virginia", role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "\"An Act Concerning Servants and Slaves\" — Virginia General Assembly, 1705 (William Waller Hening, Statutes at Large, Vol. III)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "The Three-Fifths Clause",
+    occurredAt: "1787-09-17",
+    location: "Philadelphia",
+    coverImageKey: null,
+    description: "Article I, Section 2 of the Constitution apportioned congressional representation by adding to the count of free persons \"three fifths of all other Persons\" — the constitutional euphemism for enslaved people. The clause gave slaveholding states inflated representation in Congress and the Electoral College without granting enslaved people any rights. It was not incidental to the founding; it was the price of union.",
+    tags: ["law", "founding", "what-was-done"],
+    actors: [
+      { slug: "united-states",    role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "U.S. Constitution, Art. I §2 cl. 3 — \"three fifths of all other Persons\" (enrolled copy, National Archives, 1787)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Bill of Sale — Maria and Child, Natchez, 1835",
+    occurredAt: "1835",
+    location: "Natchez, Mississippi",
+    coverImageKey: null,
+    description: "A bill of sale from Natchez, Mississippi, 1835: an enslaved woman named Maria, \"aged about 22 years,\" and her infant child, \"aged about 8 months,\" sold for $900. The document itemizes a human being and her nursing child with the same vocabulary — price, condition, warranty — applied to livestock. Thousands of identical instruments survive in the notarial archives of New Orleans, Natchez, and Charleston; each one is a unit of the same record.",
+    tags: ["record", "apparatus", "what-was-done"],
+    actors: [
+      { slug: "united-states",    role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Bill of sale — enslaved woman and child, Natchez, Mississippi, 1835 (Library of Congress, Rare Book and Special Collections Division)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "The Slave Narratives",
+    occurredAt: "1845–1861",
+    location: "United States",
+    coverImageKey: null,
+    description: "Frederick Douglass published his Narrative of the Life of Frederick Douglass, an American Slave in 1845; Harriet Jacobs published Incidents in the Life of a Slave Girl in 1861. Both were written against legal codes that criminalized Black literacy across the South — Georgia (1829), Virginia (1831), North Carolina (1831), South Carolina (1834). The act of writing was itself defiance of the apparatus. The record they made survived it.",
+    tags: ["counter-erasure", "literacy", "what-was-done"],
+    actors: [
+      { slug: "african-americans", role: "documenter" },
+      { slug: "african-americans", role: "victim" },
+      { slug: "united-states",     role: "criminal" },
+    ],
+    sources: [
+      { type: "article", label: "Frederick Douglass, Narrative of the Life of Frederick Douglass, an American Slave (Anti-Slavery Office, Boston, 1845)", rightsStatus: "unknown" },
+      { type: "article", label: "Harriet Jacobs, Incidents in the Life of a Slave Girl (published by the author, Boston, 1861)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Dred Scott v. Sandford",
+    occurredAt: "1857",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "Chief Justice Roger Taney's opinion held that Black people — enslaved or free — were not and could never be citizens of the United States, and had \"no rights which the white man was bound to respect.\" Congress lacked authority to prohibit slavery in the territories; the Missouri Compromise was invalidated. The ruling was overturned — technically — by the Fourteenth Amendment (1868). The logic did not disappear with the text.",
+    tags: ["law", "ruling", "what-was-done"],
+    actors: [
+      { slug: "us-supreme-court",  role: "criminal" },
+      { slug: "united-states",     role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Dred Scott v. Sandford, 60 U.S. (19 How.) 393 (1857) — Chief Justice Taney's majority opinion", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "The Black Codes",
+    occurredAt: "1865–1866",
+    location: "Southern United States",
+    coverImageKey: null,
+    description: "Within months of the Confederate surrender, Southern state legislatures passed Black Codes designed to re-bind the freedpeople to plantation labor. Mississippi's November 1865 code required Black workers to sign annual labor contracts by January 1 or face vagrancy arrest — vagrancy punishable by forced labor leased to planters. South Carolina's code prohibited Black people from working any trade other than farming without a license. The name changed. The structure did not.",
+    tags: ["law", "apparatus", "what-was-done"],
+    actors: [
+      { slug: "southern-states",    role: "criminal" },
+      { slug: "african-americans",  role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Mississippi Black Code, November 1865 (Acts of the State of Mississippi, 1865) — National Archives", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "United States v. Cruikshank / Colfax Massacre",
+    occurredAt: "1873–1876",
+    location: "Colfax, Louisiana / Washington, D.C.",
+    coverImageKey: null,
+    description: "On Easter Sunday, April 13, 1873, a white supremacist mob killed approximately 150 Black men in Colfax, Louisiana — the bloodiest episode of Reconstruction violence. Federal prosecutors charged participants under the Enforcement Acts. The Supreme Court's unanimous ruling in United States v. Cruikshank (1876) dismissed the indictments: the Fourteenth Amendment bound only state governments, not private actors. The ruling returned the South to its own devices and ended meaningful federal enforcement of Black rights until the 1960s.",
+    tags: ["law", "ruling", "massacre", "what-was-done"],
+    actors: [
+      { slug: "us-supreme-court",   role: "criminal" },
+      { slug: "united-states",      role: "criminal" },
+      { slug: "state-of-louisiana", role: "criminal" },
+      { slug: "african-americans",  role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "United States v. Cruikshank, 92 U.S. 542 (1876) — Supreme Court majority opinion", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "The Red Record",
+    occurredAt: "1895",
+    location: "Chicago",
+    coverImageKey: null,
+    description: "Ida B. Wells published A Red Record: Tabulated Statistics and Alleged Causes of Lynchings in the United States (1895) — three years of data (1892–1894) compiled from white Southern newspapers: names of the lynched, dates, locations, and stated \"offenses.\" The tally documented 728 lynchings in three years. Wells used the accusers' own sources against them, constructing a statistical archive the mob could not dismiss as partisan. The analysis of why lynching served as racial terror belongs to the Understanding door. The numbers are here.",
+    tags: ["statistics", "counter-erasure", "record"],
+    actors: [
+      { slug: "african-americans", role: "documenter" },
+      { slug: "african-americans", role: "victim" },
+      { slug: "southern-states",   role: "criminal" },
+    ],
+    sources: [
+      { type: "article", label: "Ida B. Wells, A Red Record: Tabulated Statistics and Alleged Causes of Lynchings in the United States (Donohue & Henneberry, Chicago, 1895)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Plessy v. Ferguson",
+    occurredAt: "1896",
+    location: "Washington, D.C. / Louisiana",
+    coverImageKey: null,
+    description: "Homer Plessy — seven-eighths white, one-eighth Black by Louisiana's classification — deliberately sat in a whites-only railcar on the East Louisiana Railroad to test the Separate Car Act of 1890. The Supreme Court ruled 7-1 that \"separate but equal\" was constitutional. Justice Brown's majority: \"We consider the underlying fallacy of the plaintiff's argument to consist in the assumption that the enforced separation of the two races stamps the colored race with a badge of inferiority.\" Justice Harlan's lone dissent: \"Our constitution is color-blind.\" The ruling stood for 58 years.",
+    tags: ["law", "ruling", "what-was-done"],
+    actors: [
+      { slug: "us-supreme-court",   role: "criminal" },
+      { slug: "state-of-louisiana", role: "criminal" },
+      { slug: "african-americans",  role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Plessy v. Ferguson, 163 U.S. 537 (1896) — Justice Brown's majority opinion and Justice Harlan's dissent", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Louisiana Grandfather Clause / Literacy Test",
+    occurredAt: "1898",
+    location: "Louisiana",
+    coverImageKey: null,
+    description: "Louisiana's constitution of 1898 (Article 197) introduced a grandfather clause exempting men from literacy and property requirements for voter registration if their fathers or grandfathers had been registered before January 1, 1867 — the eve of Black male suffrage. Combined with a literacy test, the clause reduced Black voter registration in Louisiana from approximately 130,000 in 1896 to fewer than 1,350 by 1904. The disenfranchisement was accomplished without mentioning race in the text.",
+    tags: ["law", "disenfranchisement", "what-was-done"],
+    actors: [
+      { slug: "state-of-louisiana", role: "criminal" },
+      { slug: "southern-states",    role: "criminal" },
+      { slug: "african-americans",  role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Louisiana Constitution of 1898, Art. 197 §5 (grandfather clause) — Louisiana State Archives", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Convict Leasing Records",
+    occurredAt: "1866–1928",
+    location: "Southern United States",
+    coverImageKey: null,
+    description: "The Thirteenth Amendment abolished slavery \"except as a punishment for crime.\" Southern states exploited the exception: vagrancy laws, Black Codes, and minor-offense statutes produced a steady supply of Black men leased by the state to mines, railroads, and plantations for profit. Alabama's convict-lease ledgers record names, alleged offenses, terms, and the companies that took delivery. The records are held at the Alabama Department of Archives and History. The system ran formally until Alabama terminated it in 1928.",
+    tags: ["law", "apparatus", "record", "what-was-done"],
+    actors: [
+      { slug: "southern-states",    role: "criminal" },
+      { slug: "united-states",      role: "criminal" },
+      { slug: "african-americans",  role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Alabama convict-lease ledgers, 1866–1928 (Alabama Department of Archives and History); Douglas Blackmon, Slavery by Another Name (Doubleday, 2008)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Chicago Defender — Great Migration Pages",
+    occurredAt: "1916–",
+    location: "Chicago",
+    coverImageKey: null,
+    description: "Robert Abbott's Chicago Defender — distributed clandestinely throughout the South by Pullman porters — began its \"Great Northern Drive\" campaign in 1916, publishing train schedules, wage comparisons, and letters from those who had already left. The paper was banned and burned in parts of the South; distributors faced threats. It was nonetheless read across the region. The Defender's front pages and migration columns are both a record of the exodus and one of its engines — the Black press functioning simultaneously as counter-archive and organizing instrument.",
+    tags: ["press", "migration", "counter-erasure"],
+    actors: [
+      { slug: "african-americans", role: "documenter" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Chicago Defender, \"Great Northern Drive\" pages, 1917 (ProQuest Historical Newspapers / Chicago Public Library digital archive)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "HOLC Redlining Maps & FHA Underwriting Manual",
+    occurredAt: "1934–",
+    location: "United States",
+    coverImageKey: null,
+    description: "Between 1935 and 1940 the Home Owners' Loan Corporation drew \"residential security maps\" for 239 American cities, grading neighborhoods green (A), blue (B), yellow (C), and red (D). Neighborhoods with Black residents were systematically graded D — \"hazardous\" — regardless of housing stock. The Federal Housing Administration's 1938 Underwriting Manual made the mechanism explicit: \"If a neighborhood is to retain stability it is necessary that properties shall continue to be occupied by the same social and racial classes.\" FHA mortgage insurance flowed to white suburbs; redlined neighborhoods were starved of capital. The maps are held by the National Archives; the University of Richmond's Mapping Inequality project has digitized all 239 cities.",
+    tags: ["record", "redlining", "apparatus", "what-was-done"],
+    actors: [
+      { slug: "fha",               role: "criminal" },
+      { slug: "holc",              role: "criminal" },
+      { slug: "united-states",     role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "HOLC residential security maps, 1935–1940 (National Archives / Mapping Inequality, University of Richmond); FHA Underwriting Manual, 1938 §935", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Tuskegee Syphilis Study Files",
+    occurredAt: "1932–1972",
+    location: "Macon County, Alabama",
+    coverImageKey: null,
+    description: "From 1932 to 1972 the US Public Health Service enrolled 399 Black men with syphilis in a study of the disease's natural progression — then deliberately withheld treatment, including penicillin after it became the standard of care in 1947. The study continued for 25 years after an effective cure existed. The USPHS's own internal records document the decision to withhold. The study was exposed in 1972 by Peter Buxtun, a PHS whistleblower. The records are held at the National Archives and the Tuskegee University Legacy Museum.",
+    tags: ["record", "what-was-done"],
+    actors: [
+      { slug: "us-public-health-service", role: "criminal" },
+      { slug: "united-states",            role: "criminal" },
+      { slug: "african-americans",        role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "USPHS \"Tuskegee Study of Untreated Syphilis in the Negro Male\" internal files, 1932–1972 (National Archives, Record Group 442; Tuskegee University Legacy Museum)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "WPA Federal Writers' Project Ex-Slave Narratives",
+    occurredAt: "1936–1938",
+    location: "United States",
+    coverImageKey: null,
+    description: "Between 1936 and 1938 the New Deal's Federal Writers' Project dispatched field workers across seventeen states to interview formerly enslaved people. Approximately 2,300 interviews survive, archived at the Library of Congress as the Born in Slavery collection. The testimonies are an irreplaceable counter-archive — firsthand accounts from those who survived the institution. Structural caveat: most interviewers were white Southerners; transcriptions render dialect in ways that reflect the interviewer's ear; some subjects may have self-censored. The collection is also, simultaneously, the federal government recording what it had allowed.",
+    tags: ["archive", "counter-erasure"],
+    actors: [
+      { slug: "united-states",     role: "documenter" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "\"Born in Slavery: Slave Narratives from the Federal Writers' Project, 1936–1938\" (Library of Congress, Manuscript Division, AFC 1941/016)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Brown v. Board of Education",
+    occurredAt: "1954-05-17",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "Chief Justice Earl Warren's unanimous opinion overturned Plessy v. Ferguson: \"We conclude that in the field of public education the doctrine of 'separate but equal' has no place. Separate educational facilities are inherently unequal.\" The case consolidated suits from Kansas, South Carolina, Virginia, Delaware, and Washington, D.C. The ruling made the Supreme Court, for once, the adjudicator rather than the enabler. Enforcement was another matter: the follow-on order directing integration \"with all deliberate speed\" provided cover for a decade of delay.",
+    tags: ["law", "ruling"],
+    actors: [
+      { slug: "us-supreme-court",  role: "adjudicator" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Brown v. Board of Education, 347 U.S. 483 (1954) — Chief Justice Warren's unanimous opinion", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "FBI COINTELPRO Files",
+    occurredAt: "1956–1971",
+    location: "United States",
+    coverImageKey: null,
+    description: "COINTELPRO was formally established in 1956 targeting the Communist Party and expanded by 1967 to a \"Black Nationalist Hate Groups\" program covering the SCLC, SNCC, Nation of Islam, and Black Panther Party. The Bureau used informants, forged letters, fabricated evidence, and coordination with local police to surveil and disrupt Black political organization. The program was revealed in 1971 when activists broke into the FBI's Media, Pennsylvania field office and distributed files to journalists. The Church Committee's 1975 Senate investigation documented its full scope. The declassified files at the National Archives are the government's own record of the campaign.",
+    tags: ["record", "surveillance", "apparatus", "what-was-done"],
+    actors: [
+      { slug: "fbi",               role: "criminal" },
+      { slug: "united-states",     role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "FBI COINTELPRO files — \"Black Nationalist Hate Groups\" series, 1967–1971 (National Archives); Church Committee Report, Book III, 1975", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Civil Rights Act / Voting Rights Act",
+    occurredAt: "1964–1965",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "The Civil Rights Act of 1964 (P.L. 88-352) prohibited discrimination based on race, color, religion, sex, or national origin in employment and public accommodations. The Voting Rights Act of 1965 (P.L. 89-110) prohibited discriminatory voting practices and authorized federal oversight of jurisdictions with histories of suppression. Both are the legislative high-water mark of the movement. The enforcement gap: in Shelby County v. Holder (2013) the Supreme Court gutted Section 5 of the VRA by striking its coverage formula. The statutes remain on the books. The teeth do not.",
+    tags: ["law"],
+    actors: [
+      { slug: "united-states",     role: "adjudicator" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Civil Rights Act of 1964, P.L. 88-352, 78 Stat. 241; Voting Rights Act of 1965, P.L. 89-110, 79 Stat. 437 (National Archives)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Attica / McKay Commission Report",
+    occurredAt: "1972",
+    location: "Attica, New York",
+    coverImageKey: null,
+    description: "On September 9, 1971, approximately 1,300 incarcerated men seized control of Attica Correctional Facility and held it for four days, demanding basic reforms. Governor Rockefeller ordered the state police to retake the prison on September 13. The assault killed 43 people — 33 inmates and 10 hostages. State officials initially claimed guards had been killed by inmates with improvised weapons; autopsies established that all 43 died from bullet wounds fired by the state. The McKay Commission report (1972), commissioned by the state, documented the assault and the false public statements. Its opening line: \"With the exception of Indian massacres in the late nineteenth century, the State Police assault which ended the four-day prison uprising was the bloodiest one-day encounter between Americans since the Civil War.\"",
+    tags: ["record", "what-was-done"],
+    actors: [
+      { slug: "united-states",     role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "New York State Special Commission on Attica (McKay Commission), Attica: The Official Report (Bantam Books, 1972)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "Crack/Powder Sentencing Disparity",
+    occurredAt: "1986",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "The Anti-Drug Abuse Act of 1986 (P.L. 99-570) established mandatory minimums with a 100:1 disparity between crack and powder cocaine: 5 grams of crack triggered a 5-year minimum; 500 grams of powder triggered the same sentence. The US Sentencing Commission's 1995 report documented the racial arithmetic: approximately 84% of federal crack defendants were Black; approximately 75% of powder defendants were white or Hispanic. The disparity was codified into the US Sentencing Guidelines. The Fair Sentencing Act of 2010 reduced it to 18:1. The structure of disparate punishment preceded both corrections by decades.",
+    tags: ["law", "statistics", "mass-incarceration", "what-was-done"],
+    actors: [
+      { slug: "united-states",     role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Anti-Drug Abuse Act of 1986, P.L. 99-570; US Sentencing Commission, Special Report to Congress: Cocaine and Federal Sentencing Policy, 1995", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "The 1994 Crime Bill",
+    occurredAt: "1994-09-13",
+    location: "Washington, D.C.",
+    coverImageKey: null,
+    description: "The Violent Crime Control and Law Enforcement Act of 1994 (H.R. 3355, P.L. 103-322) — the largest crime bill in US history — appropriated $9.9 billion for prison construction, funded 100,000 new police officers, expanded the federal death penalty to sixty offenses, and enacted a three-strikes provision mandating life for a third violent felony. The Bureau of Justice Statistics documents the trajectory: the US prison population grew from approximately 744,000 in 1985 to 1.6 million by 2003. Black Americans, overrepresented at every stage of the criminal process documented across this set, bore the concentrated weight of the expansion.",
+    tags: ["law", "mass-incarceration", "what-was-done"],
+    actors: [
+      { slug: "united-states",     role: "criminal" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "Violent Crime Control and Law Enforcement Act of 1994, P.L. 103-322, 108 Stat. 1796 (National Archives)", rightsStatus: "unknown" },
+    ],
+  },
+  {
+    title: "DOJ Ferguson Report",
+    occurredAt: "2015-03-04",
+    location: "Ferguson, Missouri / Washington, D.C.",
+    coverImageKey: null,
+    description: "The Department of Justice's investigation of the Ferguson, Missouri Police Department — released March 4, 2015 — documented a municipality running its courts and police primarily as a revenue generator directed at Black residents. In 2013, Black people were 67% of Ferguson's population but accounted for 85% of vehicle stops, 90% of citations, and 93% of arrests; the average Black household held 1.5 outstanding warrants. Officers routinely cited fabricated charges; supervisors pressured for more tickets. Ferguson is not an exception. The DOJ report is the present-day node of this set: a federal agency documenting, in the apparatus's own terms, what the apparatus continues to do.",
+    tags: ["record", "mass-incarceration", "present-day"],
+    actors: [
+      { slug: "united-states",     role: "documenter" },
+      { slug: "african-americans", role: "victim" },
+    ],
+    sources: [
+      { type: "article", label: "U.S. Department of Justice, Civil Rights Division — \"Investigation of the Ferguson Police Department,\" March 4, 2015", rightsStatus: "unknown" },
+    ],
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -935,7 +1321,7 @@ async function main() {
   console.log(`  ${deleted.length} moments cleared.`);
 
   // 4. Insert moments with sources, tags, and actors
-  console.log("  Inserting 45 moments…");
+  console.log("  Inserting 68 moments…");
   for (let i = 0; i < MOMENTS.length; i++) {
     const def = MOMENTS[i]!;
 
